@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="/drop.css">
+  <link rel="stylesheet" href="/main.css">
+
+
+  <script defer src="/fa/js/packs/solid.js"></script>
+  <script defer src="/fa/js/fontawesome.js"></script>
+</head>
+
+<body>
+<div class="drop" id="dropper">
+  <div>
+    Upload {{ folder }}
+    <div class="icon">
+      <i class="fa fa-cloud-upload-alt"></i>
+    </div>
+    <span class="small">Choose a file or drag it here.</span>
+  </div>
+
+</div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="/drop.js" charset="utf-8"></script>
+  <script type="text/javascript">
+      var folder = "{{ folder }}"
+      // var filenames = []
+      window.drop = new Dropzone("#dropper", {
+        url: "/upload/ipas",
+        processing: function () {
+          console.log('hey');
+        }
+      })
+
+      if (folder == "images"){
+        $('.dz-hidden-input').attr('accept', '.png')
+        drop.options.acceptedFiles = ".png"
+        drop.options.url = '/upload/images'
+      }else if (folder == "ipas"){
+        $('.dz-hidden-input').attr('accept', '.ipa')
+        drop.options.acceptedFiles = ".ipa"
+        drop.options.url = '/upload/ipas'
+      }
+
+  </script>
+</body>
+
+</html>

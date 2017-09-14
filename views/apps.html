@@ -1,24 +1,17 @@
-{% extends 'layouts.html' %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
 
-{% block body %}
-<title>{{ title }}</title>
-<!-- Page Wrapper -->
-<div id="page-wrapper">
-
-  <!-- Main -->
-  <article id="main">
-    <header>
-      <h2>Apps</h2>
-      <p>Install and sideload apps with ease.</p>
-    </header>
-    <div class="container">
-      <div class="row justify color">
-        <search v-on:result="child"></search>
-        <flexbox key="app.key" v-for="app in searchResults" :title="app.title" :image="app.image" :version="app.version" :desc="app.desc" :dl="app.dl" :signed="app.signed">
-        </flexbox>
-      </div>
+    <div id="app">
+      <myform></myform>
     </div>
-</div>
-</section>
-</article>
-{% endblock %}
+
+
+
+    <script src="js/js.js" charset="utf-8"></script>
+  </body>
+</html>

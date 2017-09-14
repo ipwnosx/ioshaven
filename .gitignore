@@ -4,3 +4,7 @@ signed.html
 ipas.html
 env.json
 assets/fa
+uploads/images/*
+!uploads/images/.ignore
+uploads/ipas/*
+!uploads/ipas/.ignore
