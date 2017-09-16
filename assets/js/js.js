@@ -1179,7 +1179,7 @@ module.exports = __webpack_require__(12);
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(process) {//require('popper')
+//require('popper')
 //require('bootstrap')
 window.Vue = __webpack_require__(13);
 window._ = __webpack_require__(14);
@@ -1192,15 +1192,14 @@ Vue.component('search', __webpack_require__(36));
 Vue.component('myform', __webpack_require__(42));
 Vue.component('apps', __webpack_require__(48));
 
-Vue.config.devtools = process.NODE_ENV === 'development';
-Vue.config.debug = process.NODE_ENV === 'development';
-Vue.config.silent = !(process.NODE_ENV === 'development');
+// Vue.config.devtools = (process.NODE_ENV === 'development')
+// Vue.config.debug = (process.NODE_ENV === 'development')
+// Vue.config.silent = !(process.NODE_ENV === 'development')
 
 window.app = new Vue({
   el: '#app'
 
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 13 */
