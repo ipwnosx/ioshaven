@@ -232,5 +232,6 @@ input.found{
     letter-spacing: 0.2rem;
     text-align: center;
     line-height: 3rem;
+    z-index: 20;
 }
 </style>

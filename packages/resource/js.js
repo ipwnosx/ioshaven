@@ -3,6 +3,7 @@
 window.Vue = require('vue')
 window._ = require('lodash');
 window.axios = require('axios');
+window.$ = window.jquery = require('jquery')
 // const $env = require('../../env.json')
 
 
