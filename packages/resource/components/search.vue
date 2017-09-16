@@ -1,13 +1,15 @@
 <template lang="html">
-  <div class="">
+  <div class="search">
 
-    <input class="search"
+    <input :class="{
+      'found': filtered[files].length > 0 && show
+    }"     @click="show = !show"
            :value="value"
            @input="update($event.target.value)"
            @keyup="filter(value, files, attr)"
            :placeholder="temp">
 
-    <div class="search-results">
+    <div class="search-results" v-show="filtered[files].length > 0 && show">
       <div class="item"
            v-for="(app, key) in filtered[files]"
            @click="set($event, files)"
@@ -17,13 +19,12 @@
 </template>
 
 <script>
-const $apps = require('../sideload-apps.json')
 export default {
   props: ['value','files', 'attr', 'temp'],
   data() {
     return {
       search: '',
-
+      show: false,
       raw: {
         apps: [],
         images: [],
@@ -38,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    this.raw.apps = $apps
+    axios.post('/json').then(r => this.raw.apps = r.data)
     axios.get('/files').then(r => {
       this.raw.images = r.data.images
       this.raw.ipas  = r.data.ipas
@@ -46,6 +47,7 @@ export default {
   },
   methods:{
     filter(search, list, prop=null) {
+      this.show = true
       var newlist = list
       list = this.raw[list]
       if (search.length <= 0) return this.filtered[newlist] = []
@@ -68,6 +70,7 @@ export default {
     set(e, files) {
       this.update(e.target.innerHTML)
       this.filtered[files] = ""
+      this.$emit('chosen', e)
     },
 
     update(e){
@@ -78,4 +81,14 @@ export default {
 </script>
 
 <style lang="css">
+.item {
+    padding: 1rem;
+    font-family: sans-serif;
+    background: white;
+    box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.64);
+}
+.item:hover {
+  cursor: pointer;
+  background: #eee;
+}
 </style>

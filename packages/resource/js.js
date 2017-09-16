@@ -11,16 +11,14 @@ window.axios = require('axios');
 
 Vue.component('search', require('./components/search.vue'))
 Vue.component('myform', require('./components/form.vue'))
+Vue.component('apps', require('./components/apps.vue'))
 
-// Vue.config.devtools = (process.NODE_ENV === 'development')
-// Vue.config.debug = (process.NODE_ENV === 'development')
-// Vue.config.silent = !(process.NODE_ENV === 'development')
+Vue.config.devtools = (process.NODE_ENV === 'development')
+Vue.config.debug = (process.NODE_ENV === 'development')
+Vue.config.silent = !(process.NODE_ENV === 'development')
 
-const app = new Vue({
+window.app = new Vue({
   el: '#app',
-  data: {
-  },
-  methods: {
 
-  }
+
 })

@@ -14,25 +14,33 @@
 
 <body>
 <div class="drop" id="dropper">
-  <div>
-    Upload {{ folder }}
-    <div class="icon">
-      <i class="fa fa-cloud-upload-alt"></i>
-    </div>
-    <span class="small">Choose a file or drag it here.</span>
-  </div>
+</div>
+<div id="blank">
+  <div class="small top">Upload {{ folder }}</div>
 
+  <div class="icon middle">
+    <i class="fa fa-cloud-upload-alt"></i>
+  </div>
+  <div class="small bottom">Choose a file or drag it here.</div>
 </div>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="/js/jquery.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="/drop.js" charset="utf-8"></script>
   <script type="text/javascript">
+
+      function dostuff() {
+        $('#blank').hide()
+        $('#blank').css('opacity', '1')
+      }
       var folder = "{{ folder }}"
       // var filenames = []
       window.drop = new Dropzone("#dropper", {
         url: "/upload/ipas",
         processing: function () {
-          console.log('hey');
+          dostuff()
+        },
+        drop: function () {
+          dostuff()
         }
       })
 

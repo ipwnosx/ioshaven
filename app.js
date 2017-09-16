@@ -12,6 +12,7 @@ const crypto = require('crypto')
 const env = require('./env.json')
 const fileUpload = require('express-fileupload');
 const fs = require('fs')
+const path = require('path')
 
 nunjucks.configure('views', {
   autoescape: true,
@@ -31,6 +32,8 @@ app.get('/upload/:folder', getUpload)
 app.post('/upload/:folder', upload)
 app.get('/apps', apps)
 app.get('/files', getFiles)
+app.post('/app/save', appSave)
+app.post('/json', getJSON)
 
 function readdir(path) {
   return new Promise(function(resolve, reject) {
@@ -86,4 +89,30 @@ function getFiles(req, res){
 
 function apps(req, res){
   res.render('apps.html')
+}
+
+function appSave(req, res) {
+  redis.hset('apps', req.body.title.toLowerCase(), JSON.stringify(req.body))
+  .then(r => {
+    res.end('success')
+  })
+
+}
+
+function getJSON(req, res) {
+  if (req.body.what){
+    redis.hget('apps', req.body.what.toLowerCase())
+    .then(r=> {
+      res.json(JSON.parse(r))
+    })
+  }else {
+    redis.hgetall('apps')
+    .then(r=> {
+      for (key in r){
+        r[key] = JSON.parse(r[key])
+      }
+      res.json(r)
+    })
+  }
+
 }
