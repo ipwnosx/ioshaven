@@ -81,7 +81,6 @@ export default {
       return new Promise((resolve, reject) => {
         if (
           this.raw.image.length > 0 &&
-          this.raw.dl.length > 0 &&
           this.raw.title.length > 0 &&
           this.raw.version.length > 0 &&
           this.raw.desc.length > 0

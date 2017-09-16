@@ -29914,7 +29914,7 @@ var $mark = __webpack_require__(46);
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        if (_this.raw.image.length > 0 && _this.raw.dl.length > 0 && _this.raw.title.length > 0 && _this.raw.version.length > 0 && _this.raw.desc.length > 0) {
+        if (_this.raw.image.length > 0 && _this.raw.title.length > 0 && _this.raw.version.length > 0 && _this.raw.desc.length > 0) {
           _this.saved = JSON.parse(JSON.stringify(_this.raw));
           axios.post('/app/save', _this.saved).then(function (res) {
             _this.update();
