@@ -16,11 +16,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "cross-env": "^5.0.5",
-    "express": "^4.15.4",
-    "ioredis": "^3.1.4",
-    "laravel-mix": "^1.4.2",
-    "socket.io": "^2.0.3"
   },
   "dependencies": {
     "aws-sdk": "^2.100.0",
@@ -35,6 +30,11 @@
     "nunjucks": "^3.0.1",
     "popper": "^1.0.0",
     "tls": "0.0.1",
-    "vue": "^2.4.2"
+    "vue": "^2.4.2",
+    "cross-env": "^5.0.5",
+    "express": "^4.15.4",
+    "ioredis": "^3.1.4",
+    "laravel-mix": "^1.4.2",
+    "socket.io": "^2.0.3"
   }
 }
