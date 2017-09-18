@@ -1,5 +1,5 @@
 <template>
-<div class="col-md-4 box2">
+<div class="box2">
   <div class="inside">
     <h4 class="center color-black">{{title}}</h4>
     <img :src='image' class="center-block" />

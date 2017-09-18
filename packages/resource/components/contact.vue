@@ -75,6 +75,9 @@ export default {
           })
       }
     }
+  },
+  mounted() {
+    $('#firstname').focus()
   }
 }
 </script>

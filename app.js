@@ -2,7 +2,7 @@ var express =require('express')
 var app = express()
 var server = require('http').Server(app)
 var io = require('socket.io')(server)
-server.listen(8000)
+server.listen(8000, ()=>{console.log('Server is ready and listening on port 8000')})
 var Redis = require('ioredis');
 var redis = new Redis();
 var _ =require('lodash')
