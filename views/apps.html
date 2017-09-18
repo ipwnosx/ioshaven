@@ -14,8 +14,17 @@
     <div class="container">
       <div class="row justify color">
         <search v-on:result="child"></search>
-        <flexbox key="app.key" v-for="app in searchResults" :title="app.title" :image="app.image" :version="app.version" :desc="app.desc" :dl="app.dl" :signed="app.signed">
-        </flexbox>
+        <div class="app-adverts col-md-4 " v-for="app in searchResults">
+          <flexbox key="app.key"
+                   :title="app.title"
+                   :image="app.image"
+                   :version="app.version"
+                   :desc="app.desc"
+                   :dl="app.dl"
+                   :signed="app.signed">
+          </flexbox>
+        </div>
+
       </div>
     </div>
 </div>

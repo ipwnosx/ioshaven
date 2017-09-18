@@ -14,6 +14,16 @@ $(document).ready(function (){
     e.preventDefault()
     $('#paypalDonate').submit()
   })
+
+  $('a').click(function (e) {
+    e.preventDefault()
+    if (e.target.hash === '#contact') {
+      $('#contactform').modal('show')
+      $('#contactform').on('shown.bs.modal', function () {
+        $(this).scrollTop(0);
+      })
+    }
+  })
 })
 
 Vue.component('flexbox', require('./components/flexbox.vue'))

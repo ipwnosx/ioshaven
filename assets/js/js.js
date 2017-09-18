@@ -1193,6 +1193,16 @@ $(document).ready(function () {
     e.preventDefault();
     $('#paypalDonate').submit();
   });
+
+  $('a').click(function (e) {
+    e.preventDefault();
+    if (e.target.hash === '#contact') {
+      $('#contactform').modal('show');
+      $('#contactform').on('shown.bs.modal', function () {
+        $(this).scrollTop(0);
+      });
+    }
+  });
 });
 
 Vue.component('flexbox', __webpack_require__(56));
@@ -29710,7 +29720,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "col-md-4 box2"
+    staticClass: "box2"
   }, [_c('div', {
     staticClass: "inside"
   }, [_c('h4', {
@@ -30111,6 +30121,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
       }
     }
+  },
+  mounted: function mounted() {
+    $('#firstname').focus();
   }
 });
 

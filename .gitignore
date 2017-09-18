@@ -3,7 +3,6 @@ test.html
 signed.html
 ipas.html
 env.json
-assets/fa
 uploads/images/*
 uploads/ipas/*
 !uploads/images/.gitignore
