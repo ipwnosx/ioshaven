@@ -13,6 +13,7 @@ const env = require('./env.json')
 const fileUpload = require('express-fileupload');
 const fs = require('fs')
 const path = require('path')
+const exec = require('child_process').exec
 
 nunjucks.configure('views', {
   autoescape: true,
@@ -25,7 +26,9 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(fileUpload())
 
-server.listen(8000)
+server.listen(8000,()=>{
+  console.log('server is running');
+})
 
 app.get('/', home)
 app.get('/upload/:folder', getUpload)
@@ -34,6 +37,7 @@ app.get('/apps', apps)
 app.get('/files', getFiles)
 app.post('/app/save', appSave)
 app.post('/json', getJSON)
+app.post('/golive', goLive)
 
 function readdir(path) {
   return new Promise(function(resolve, reject) {
@@ -115,4 +119,10 @@ function getJSON(req, res) {
     })
   }
 
+}
+function goLive(req, res) {
+exec('./fileTransfer.sh',(error, stdout, stderr)=>{
+  if (error) return console.log(error);
+  res.end(stdout)
+})
 }

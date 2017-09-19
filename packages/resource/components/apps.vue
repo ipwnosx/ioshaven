@@ -8,9 +8,16 @@
         <i class="fa fa-plus"></i>
       </div>
 
-      <div class="opt">
-        <i class="fa fa-save"></i>
-        <span @click="saveAll">Save All</span>
+      <div class="opt"  @click="saveAll">
+        <i class="fa fa-spinner fa-spin fa-fw" v-if="savingAll"></i>
+        <i class="fa fa-save" v-else=""></i>
+        <span>Save All</span>
+      </div>
+
+      <div class="opt danger" @click="goLive">
+        <i class="fa fa-spinner fa-spin fa-fw" v-if="goingLive"></i>
+        <i class="fa fa-cloud-upload" v-if="!goingLive"></i>
+        <span>{{goingLive}}</span>
       </div>
     </div>
   </div>
@@ -21,7 +28,9 @@ export default {
   data() {
     return {
       count: 0,
-      forms: []
+      forms: [],
+      goingLive: false,
+      savingAll: false
     }
   },
   methods: {
@@ -29,11 +38,28 @@ export default {
       this.forms[id-1] = e
     },
     saveAll() {
+      this.savingAll = true
       let p = []
       _.forEach(this.forms, f => {
         p.push(f.save())
       })
-      return Promise.all(p).then(()=>{console.log('all done!!');})
+      return Promise.all(p).then(()=>{
+        console.log('all done!!');
+        this.savingAll = false
+      })
+    },
+    goLive() {
+      this.goingLive = true
+      setTimeout(()=>{
+        axios.post("/golive")
+        .then(result=>{
+          console.log(result.data);
+          this.goingLive = false
+        })
+      },1000)
+
+
+
     }
   }
 }
@@ -71,5 +97,11 @@ export default {
 .opt:hover {
   cursor: pointer;
   background: lighten(#2196F3, 7%);
+}
+.danger {
+  background: #e02727;
+}
+.danger:hover {
+  background: lighten(#e02727, 7%);
 }
 </style>
