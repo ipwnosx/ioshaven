@@ -1,0 +1,47 @@
+body {
+  background-color: #eee;
+}
+
+.cyrus {
+  margin-top: 15px;
+  height: 50px;
+}
+
+.icon-r {
+  margin-right: 1rem;
+  font-size: 1.1rem;
+}
+
+.icon-l {
+  margin-left: 1rem;
+  font-size: 1.1rem;
+}
+
+.noUnderline {
+  text-decoration: none !important;
+}
+
+.noUnderline:hover {
+  color: white;
+}
+
+.row {
+  margin: auto !important;
+}
+
+a,
+a:hover a img {
+  text-decoration: none;
+  border: 0;
+}
+
+#menu ul > li > a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  letter-spacing: 0.1rem;
+}
+

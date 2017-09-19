@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,8 +70,8 @@
 "use strict";
 
 
-var bind = __webpack_require__(6);
-var isBuffer = __webpack_require__(19);
+var bind = __webpack_require__(7);
+var isBuffer = __webpack_require__(20);
 
 /*global toString:true*/
 
@@ -797,10 +797,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(7);
+    adapter = __webpack_require__(8);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(7);
+    adapter = __webpack_require__(8);
   }
   return adapter;
 }
@@ -871,10 +871,200 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -901,7 +1091,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -919,7 +1109,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -930,7 +1120,7 @@ var settle = __webpack_require__(23);
 var buildURL = __webpack_require__(25);
 var parseHeaders = __webpack_require__(26);
 var isURLSameOrigin = __webpack_require__(27);
-var createError = __webpack_require__(8);
+var createError = __webpack_require__(9);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(28);
 
 module.exports = function xhrAdapter(config) {
@@ -1106,7 +1296,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1131,7 +1321,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1143,7 +1333,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1169,28 +1359,29 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = [{"title":"Instagram++","image":"/app-icons/instagram.png","version":"14.0","desc":"Upgrade your Instagram expierence with Instagram++.","dl":"http://destyy.com/q3Yd4y","signed":"http://clkmein.com/q2FuL9"},{"title":"Instagram Rocket","image":"/app-icons/instagram.png","version":"14.0","desc":"Upgrade your Instagram expierence with Instagram Rocket.","dl":"http://destyy.com/q3Yfu8","signed":"http://clkmein.com/q2Fu5A"},{"title":"Snapchat++","image":"/app-icons/snapchat.png","version":"10.17","desc":"Snapchat++ features a lot like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2Im0U","signed":"http://clkmein.com/q2Fi0Y"},{"title":"Phantom for Snapchat","image":"/app-icons/snapchat.png","version":"10.17","desc":"Phantom for Snapchat has features like saving snaps, custom filters, and more! This version includes Phantom Lite v2.3.","dl":"http://clkmein.com/q2FhPd","signed":"http://clkmein.com/q2FiAJ"},{"title":"Snapchat SCOthman","image":"/app-icons/scothman.png","version":"10.17","desc":"Snapchat SCOthman includes features like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2InhR","signed":"http://clkmein.com/q2FiLw"},{"title":"Tinder++","image":"/app-icons/tinder.png","version":"7.5.3","desc":"Upgrade your Tinder expierence with Tinder++. Obtain features like unlimited likes and more!","dl":"http://festyy.com/q3A3db"},{"title":"Twitter++","image":"/app-icons/twitter.png","version":"7.7","desc":"Upgrade your Twitter expierence with Twitter++.","dl":"http://clkmein.com/q2Imh4","signed":"http://clkmein.com/q2FiNp"},{"title":"Youtube++","image":"/app-icons/youtube.png","version":"12.35","desc":"Upgrade your YouTube expierence with YouTube++. Obtain features like no ads and more!","dl":"http://destyy.com/q3YfDa","signed":"http://clkmein.com/q2Fi5W"},{"title":"Cercube 4","image":"/app-icons/youtube.png","version":"12.33","desc":"Upgrade your YouTube expierence with Cercube 4. Obtain features like no ads and more!","dl":"http://destyy.com/q12RgC","signed":"http://clkmein.com/q2Fotv"},{"title":"Youtube Music++","image":"/app-icons/youtube.png","version":"1.92.2","desc":"Upgrade your YouTube Music expierence with YouTube Music++. Obtain features like no ads and more!","dl":"http://clkmein.com/q2IR3Y","signed":"http://clkmein.com/q2Fovj"},{"title":"Facebook++","image":"/app-icons/facebook.png","version":"141.0","desc":"Upgrade your Facebook expierence with Facebook++.","dl":"http://clkmein.com/q2IERa","signed":"http://clkmein.com/q2FoTq"},{"title":"WhatsApp++","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp++.","dl":"http://destyy.com/q3Ygh6","signed":"http://clkmein.com/q2FoN4"},{"title":"WhatsApp Watusi","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp Watusi.","dl":"http://destyy.com/q3YgAa","signed":"http://clkmein.com/q2FpeC"},{"title":"WhatsApp Watusi + OnlineNotify","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"This special version of Watusi supports notifications.","dl":"http://destyy.com/q3YjAi"},{"title":"Twitch++","image":"/app-icons/twitch.png","version":"5.1.1","desc":"Upgrade your Twitch expierence with Twitch++.","dl":"http://corneey.com/q1RRiF","signed":"http://clkmein.com/q2FpfN"},{"title":"Spotify++","image":"/app-icons/spotify.png","version":"8.4.18","desc":"Upgrade your Spotify expierence with Spotify++. Obtain Spotify Premium for free!","dl":"http://destyy.com/q3YgL3","signed":"http://clkmein.com/q2FpxX"},{"title":"SoundCloud++","image":"/app-icons/soundcloud.png","version":"5.12","desc":"Upgrade your SoundCloud expierence with SoundCloud++. Obtain Soundcloud Go+ for free!","signed":"http://clkmein.com/q2Fpm5"},{"title":"DownCloud Pro","image":"/app-icons/downcloud.png","version":"2.0","desc":"Upgrade your SoundCloud expierence with DownCloud Pro. Download any song from SoundCloud for free!","dl":"http://gestyy.com/q2xzR4"},{"title":"Deezer++","image":"/app-icons/deezer.png","version":"6.24.1","desc":"Upgrade your Deezer expierence with Deezer++. Obtain Deezer Premium+ for free!","dl":"http://gestyy.com/q2xunJ","signed":"http://clkmein.com/q2FpTA"},{"title":"Napster++","image":"/app-icons/napster.png","version":"5.11.1","desc":"Upgrade your Napster expierence with Napster++.","dl":"http://clkmein.com/q2IRTg","signed":"http://clkmein.com/q2FpAF"},{"title":"Pandora++","image":"/app-icons/pandora.png","version":"1708.1","desc":"Upgrade your Pandora expierence with Pandora++. Obtain Pandora Premium for free!","dl":"http://destyy.com/q3Yhta","signed":"http://clkmein.com/q2FpNX"},{"title":"Movie Box++","image":"/app-icons/moviebox.png","version":"3.7.2","desc":"Upgrade your Movie Box expierence with Movie Box++. Remove ads from Movie Box!","dl":"http://gestyy.com/q2xgSt","signed":"http://clkmein.com/q2Fazp"},{"title":"Crunchyroll++","image":"/app-icons/crunchyroll.png","version":"3.0.8","desc":"Upgrade your Crunchyroll expierence with Crunchyroll++.","dl":"http://clkmein.com/qBV0A6","signed":"http://clkmein.com/q2Faou"},{"title":"Snapchat Pink","image":"/app-icons/scpink.png","version":"iOS 10 & 11","desc":"Upgrade your Snapchat expierence with Snapchat Pink.","signed":"http://festyy.com/q65BGn"},{"title":"iCapture 10","image":"/app-icons/ic10.jpg","version":"3.0-b48","desc":"Record your device screen with iCapture 10.","dl":"http://festyy.com/q651tB"},{"title":"Betternet++","image":"/app-icons/betternet.png","version":"3.3.21","desc":"Upgrade your Betternet expierence with Betternet++. Obtain Betternet Premium for free!","dl":"http://destyy.com/qN5D6g"},{"title":"NBA++","image":"/app-icons/nba.png","version":"7.053","desc":"Upgrade your NBA expierence with NBA++.","dl":"http://clkmein.com/qBVfyI","signed":"http://clkmein.com/q2FaDQ"},{"title":"PokeGo++ 2.0","image":"/app-icons/pogo.png","version":"r40","desc":"Upgrade your Pokemon Go expierence with PokeGo++ 2.0. Obtain features like teleporting and more!","dl":"http://gestyy.com/q2xsks","signed":"http://clkmein.com/q2FaNd"},{"title":"UFC++","image":"/app-icons/ufc.png","version":"3.2","desc":"Upgrade your UFV expierence with UFC++.","signed":"http://clkmein.com/q2FaKs"},{"title":"123 Movies","image":"/app-icons/123.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with 123 Movies.","dl":"http://clkmein.com/qBVbkp"},{"title":"Bobby Movie","image":"/app-icons/bmovie.png","version":"3.1.6","desc":"Watch movies that are in the theatre and TV shows for free with Bobby Movie.","dl":"http://gestyy.com/q2xfCI","signed":"http://destyy.com/q3YXrV"},{"title":"Bobby Music","image":"/app-icons/bmusic.png","version":"2.0.3","desc":"Listen to any song you want to for free with Bobby Music.","dl":"http://clkmein.com/qBV0eq"},{"title":"Cartoon HD","image":"/app-icons/cartoon.png","version":"2.0","desc":"Watch movies that are in the theatre and TV shows for free with Cartoon HD.","signed":"http://clkmein.com/q2Fsep"},{"title":"CienemaBox PB","image":"/app-icons/cb.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with CinemaBox PB.","dl":"http://clkmein.com/qBV0Er"},{"title":"Channels","image":"/app-icons/channels.png","version":"1.3","desc":"Watch live tv for free with Channels.","dl":"http://clkmein.com/qBVx0U","signed":"http://clkmein.com/q2FsuY"},{"title":"Live Wire","image":"/app-icons/livewire.png","version":"1.5","desc":"Watch live tv for free with Live Wire.","dl":"http://clkmein.com/qBVxSu","signed":"http://clkmein.com/q2FssH"},{"title":"FlickJoy","image":"/app-icons/flickjoy.png","version":"1.5","desc":"Watch movies that are in the theatre and TV shows for free with FlickJoy.","dl":"http://clkmein.com/qBVxMI"},{"title":"Popcorn Time","image":"/app-icons/popcorntime.png","version":"3.1.2","desc":"Watch movies that are in the theatre and TV shows for free with Popcorm Time.","dl":"http://clkmein.com/qBVcwz","signed":"http://clkmein.com/q2Fsjs"},{"title":"Surge","image":"/app-icons/surge.png","version":"1.0.1","desc":"Watch live tv for free with Surge.","dl":"http://clkmein.com/qBVvrA"},{"title":"MovieHD","image":"/app-icons/moviehd.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with MovieHD.","dl":"http://clkmein.com/qBVxbn"},{"title":"ToonsNow","image":"/app-icons/toonsnow.png","version":"1.1.2","desc":"Watch movies that are in the theatre and TV shows for free with ToonsNow.","dl":"http://clkmein.com/qBVcCd"},{"title":"Slick TV","image":"/app-icons/slicktv.png","version":"1.3","desc":"Watch live tv for free with Slick TV.","dl":"http://clkmein.com/qBVcTY"},{"title":"Music Pocket","image":"/app-icons/musicpocket.png","version":"1.0","desc":"Listen to any song you want to for free with Music Pocket.","dl":"http://clkmein.com/qBVvIY"},{"title":"AudioTube","image":"/app-icons/audiotube.png","version":"1.7","desc":"Listen to any song on YouTube you want to for free with AudioTube.","dl":"http://clkmein.com/qBVziG"},{"title":"GBA4iOS","image":"/app-icons/gba.png","version":"2.1","desc":"Play GBA on your device with GBA4iOS.","dl":"http://ceesty.com/qNqBou","signed":"http://clkmein.com/q2FsMM"},{"title":"Happy Chick","image":"/app-icons/happychick.png","version":"1.5.4","desc":"Happy Chick is an advanced multi-emulator app for iOS.","signed":"http://clkmein.com/q2Fs60"},{"title":"HandJoy","image":"/app-icons/handjoy.png","version":"1.0","desc":"HandJoy is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsaA"},{"title":"iNDS","image":"/app-icons/inds.png","version":"1.5.4","desc":"Play NDS on your device with iNDS.","dl":"http://ceesty.com/qNq6YV"},{"title":"RetroArch","image":"/app-icons/retroarch.png","version":"1.6","desc":"RetroArch is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsqQ"},{"title":"Clash of Phoenix","image":"/app-icons/coc.png","version":"8.709.2","desc":"Upgrade your Clash of Clans expierence with Clash of Phoenix. Obtain features like unlimited resources, troops, gems, and more!","dl":"http://ceesty.com/qNwyJH"},{"title":"iSSB","image":"/app-icons/issb.png","version":"2.21","desc":"Play SSB on your device with iSSB.","dl":"http://ceesty.com/qNwuGc"},{"title":"NFL GamePass++","image":"/app-icons/nflgp.png","version":"3.9","desc":"Upgrade your NFL GamePass expierence with NFL GamePass++.","dl":"http://destyy.com/q12kmb"},{"title":"NFL GamePass Europe++","image":"/app-icons/nflgp.png","version":"1.3","desc":"Upgrade your NFL GamePass expierence in Europe with NFL GamePass Europe++.","dl":"http://gestyy.com/q2xKTU"},{"title":"Fily","image":"/app-icons/fily.png","version":"1.1","desc":"Browse and download files on your device with Fily.","dl":"http://ceesty.com/qNwPe5"},{"title":"iFile","image":"/app-icons/ifile.png","version":"2.2","desc":"Browse and download files on your device with iFile.","dl":"http://ceesty.com/qNwPkQ"},{"title":"f.lux","image":"/app-icons/flux.png","version":"1.0.9","desc":"Soothe your eyes at night when looking at your device with f.lux.","dl":"http://corneey.com/q1HOFo"},{"title":"Everycord","image":"/app-icons/everycord.png","version":"1.1.5","desc":"Record your device screen with EveryCord.","dl":"http://gestyy.com/q2xcoF","signed":"http://clkmein.com/q2FdB5"},{"title":"iCleaner","image":"/app-icons/icleaner.png","version":"2.0.1","desc":"Clean up and free space on your device with iCleaner.","dl":"http://destyy.com/qNXsGY","signed":"http://clkmein.com/q2Fdky"},{"title":"Kodi Jarvis","image":"/app-icons/kodi.png","version":"16.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Jarvis.","dl":"http://ceesty.com/qNwASi","signed":"http://clkmein.com/q2Fdbr"},{"title":"Kodi Krypton","image":"/app-icons/kodi.png","version":"17.4","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Krypton.","dl":"http://destyy.com/q3Ylp7","signed":"http://festyy.com/q3AVGM"},{"title":"Kodi Legacy","image":"/app-icons/kodi.png","version":"15.2.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Legacy.","dl":"http://destyy.com/qNXsWe","signed":"https://is.gd/3AEUJc"},{"title":"Kodi Leia","image":"/app-icons/kodi.png","version":"18","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Leia.","dl":"http://ceesty.com/qNwSgn"},{"title":"BatteryLife","image":"/app-icons/batterylife.png","version":"1.7","desc":"Moniter and improve your device's battery with Battery Life.","dl":"http://ceesty.com/qNwOBs"},{"title":"xCleaner","image":"/app-icons/xcleaner.png","version":"1.0.2","desc":"Clean up and free space on your device with xCleaner.","dl":"http://ceesty.com/qNwSLn","signed":"http://clkmein.com/q2FdFw"},{"title":"iDarkMode","image":"/app-icons/idarkmode.png","version":"1.0","desc":"Enable dark mode on your device with iDarkMode.","dl":"http://ceesty.com/qNwDar"},{"title":"Yalu102","image":"/app-icons/yalu.png","version":"b7","desc":"Jailbreak devices running iOS 10-10.2.","signed":"http://destyy.com/q48Voy"},{"title":"Pangu","image":"/app-icons/pangu.png","version":"1.1","desc":"Jailbreak devices running iOS 9.2-9.3.3","signed":"http://clkmein.com/q2FsXu"},{"title":"Phoenix","image":"/app-icons/phoenix.png","version":"3","desc":"Jailbreak devices running iOS 9.3.5","signed":"http://destyy.com/q48MgH"},{"title":"AeroTV","image":"/app-icons/aero.png","version":"b15","desc":"Watch live tv for free with AeroTV.","dl":"http://festyy.com/q3A35q","signed":"http://clkmein.com/q2FsmD"},{"title":"LiveRevoke","image":"/app-icons/liverevoke.png","version":"1.0","desc":"See when your favorite third-party AppStores get revoked.","dl":"http://clkmein.com/q4rZRo"},{"title":"PPSSPP","image":"/app-icons/ppsspp.png","version":"1.4.2","desc":"A PSP emulator for your iPhone.","dl":"http://ceesty.com/q4vklh"},{"title":"Hotspot Shield++","image":"/app-icons/hotspot.png","version":"3.7.7","desc":"Upgrade your Hotspot Shield expierence with Hotspot Shield++. Obtain Hotspot Shield Elite for free!","dl":"http://festyy.com/q65Vdn"},{"title":"Saavn++","image":"/app-icons/saavn.png","version":"5.10","desc":"Listen to your favorite hindi songs for free.","dl":"http://ceesty.com/q4vl3z"}]
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(13);
-module.exports = __webpack_require__(66);
-
-
-/***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-//require('popper')
+__webpack_require__(14);
+__webpack_require__(66);
+module.exports = __webpack_require__(67);
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {//require('popper')
 //require('bootstrap')
-window.Vue = __webpack_require__(14);
-window._ = __webpack_require__(15);
-window.axios = __webpack_require__(17);
+window.Vue = __webpack_require__(15);
+window._ = __webpack_require__(16);
+window.axios = __webpack_require__(18);
 var $env = __webpack_require__(37);
 
 $(document).ready(function () {
@@ -1218,16 +1409,16 @@ Vue.component('contact', __webpack_require__(49));
 Vue.component('popup', __webpack_require__(54));
 Vue.component('contactitem', __webpack_require__(59));
 
-// Vue.config.devtools = (process.NODE_ENV === 'development')
-// Vue.config.debug = (process.NODE_ENV === 'development')
-// Vue.config.silent = !(process.NODE_ENV === 'development')
+Vue.config.devtools = process.NODE_ENV === 'development';
+Vue.config.debug = process.NODE_ENV === 'development';
+Vue.config.silent = !(process.NODE_ENV === 'development');
 
 var app = new Vue({
   el: '#app',
   data: {
     adverts: __webpack_require__(65),
-    apps: __webpack_require__(11),
-    searchResults: __webpack_require__(11),
+    apps: __webpack_require__(12),
+    searchResults: __webpack_require__(12),
     contact: {},
     store: ""
   },
@@ -1282,9 +1473,10 @@ var app = new Vue({
     }
   }
 });
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11376,10 +11568,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -28468,10 +28660,10 @@ module.exports = Vue$3;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(16)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(17)(module)))
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -28499,21 +28691,21 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(18);
+module.exports = __webpack_require__(19);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(6);
-var Axios = __webpack_require__(20);
+var bind = __webpack_require__(7);
+var Axios = __webpack_require__(21);
 var defaults = __webpack_require__(4);
 
 /**
@@ -28547,9 +28739,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(10);
+axios.Cancel = __webpack_require__(11);
 axios.CancelToken = __webpack_require__(35);
-axios.isCancel = __webpack_require__(9);
+axios.isCancel = __webpack_require__(10);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -28564,7 +28756,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /*!
@@ -28591,7 +28783,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28684,196 +28876,6 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28899,7 +28901,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(8);
+var createError = __webpack_require__(9);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -29318,7 +29320,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(32);
-var isCancel = __webpack_require__(9);
+var isCancel = __webpack_require__(10);
 var defaults = __webpack_require__(4);
 
 /**
@@ -29471,7 +29473,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(10);
+var Cancel = __webpack_require__(11);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -29773,7 +29775,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "box2 col-md-4"
+    staticClass: "box2 col-md-6 col-lg-4 col-xl-3"
   }, [(_vm.advert) ? _c('div', {
     staticClass: "inside"
   }, [_c('h4', {
@@ -30905,6 +30907,12 @@ module.exports = {"digitalocean":{"advert":"true","image":"app-icons/DigitalOcea
 
 /***/ }),
 /* 66 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 67 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
