@@ -1,59 +1,19 @@
 <!DOCTYPE html>
 
 
-<!--
-▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇
-    DO NOT PUT ANY HEADER STUFF IN THIS AREA!!
-    PLEASE PUT ALL THAT CODE IN THE FOLLOWING FILE!!
-    /VIEWS/INCLUDES/HEADER.HTML
-▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇
--->
-
 <!-- H E A D E R   C O D E -->
 {% include 'includes/header.html' %}
 
 <body>
-  <!-- CHANGE COLOR AND TEXT COLOR -->
-  <style>
-    a,
-    a:hover a img {
-      text-decoration: none;
-      border: 0;
-    }
-
-    .row.justify.color {
-      margin-left: 5px;
-      background-color: #eee;
-    }
-
-    body {
-      background-color: #eee;
-    }
-
-    .cyrus {
-      margin-top: 15px;
-      height: 50px;
-    }
-    .noUnderline {
-      text-decoration: none !important;
-    }
-    .noUnderline:hover {
-      color: white; 
-    }
-
-  </style>
-  <!-- END STYLE -->
 
   {% include 'includes/_navbar.html' %}
-  <!-- {-% include 'includes/_messages.html' %} -->
   <div id="app">
     {% block body %}{% endblock %}
     <contact></contact>
   </div>
 
+  <!-- F O O T E R  C O D E -->
   {% include 'includes/footer.html' %}
-
-
 
 </body>
 

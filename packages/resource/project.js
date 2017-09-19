@@ -32,9 +32,9 @@ Vue.component('contact', require('./components/contact.vue'))
 Vue.component('popup', require('./components/popup.vue'))
 Vue.component('contactitem', require('./components/contactItem.vue'))
 
-// Vue.config.devtools = (process.NODE_ENV === 'development')
-// Vue.config.debug = (process.NODE_ENV === 'development')
-// Vue.config.silent = !(process.NODE_ENV === 'development')
+Vue.config.devtools = (process.NODE_ENV === 'development')
+Vue.config.debug = (process.NODE_ENV === 'development')
+Vue.config.silent = !(process.NODE_ENV === 'development')
 
 const app = new Vue({
   el: '#app',
