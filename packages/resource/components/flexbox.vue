@@ -1,12 +1,27 @@
 <template>
-<div class="box2">
-  <div class="inside">
+<div class="box2 col-md-4">
+  <div class="inside" v-if="advert">
+    <h4 class="center color-black"></h4>
+    <img :src="$advert().image" class="center-block" />
+    <popup
+      :advert="true"
+      :image="$advert().image"
+      :title="$advert().title"
+      :description="$advert().desc"
+      dl=""
+      :signed="$advert().link"
+      version=""
+    ></popup>
+    <a :href="$advert().link" class="btn btn-success center-dl center-s-dl">Promotion</a>
+  </div>
+
+  <div class="inside" v-else="">
     <h4 class="center color-black">{{title}}</h4>
     <img :src='image' class="center-block" />
     <br>
     <p class="center color-black">{{version}}</p>
-    <!-- <p class="desc center color-black">{{desc}}</p> -->
     <popup
+      :advert="false"
       :image="image"
       :title="title"
       :description="desc"
@@ -22,8 +37,42 @@
 
 <script>
 export default {
-  props: ["title", "image", "version", "desc", "dl", "signed"],
-  mounted() {}
+  props: {
+    "image": {
+      required: false
+    },
+    "title": {
+      required: false
+    },
+    "desc": {
+      required: false
+    },
+    "dl": {
+      required: false
+    },
+    "signed": {
+      required: false
+    },
+    "version": {
+      required: false
+    },
+    "advert": {
+      required: false
+    },
+  },
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+    $advert(){
+      return this.$parent.adverts[this.advert]
+    }
+  },
+  mounted() {
+    console.log('this advert is: '+this.advert);
+  }
 }
 </script>
 

@@ -1179,7 +1179,7 @@ module.exports = __webpack_require__(12);
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(process) {//require('popper')
+//require('popper')
 //require('bootstrap')
 window.Vue = __webpack_require__(13);
 window._ = __webpack_require__(14);
@@ -1195,8 +1195,8 @@ $(document).ready(function () {
   });
 
   $('a').click(function (e) {
-    e.preventDefault();
     if (e.target.hash === '#contact') {
+      e.preventDefault();
       $('#contactform').modal('show');
       $('#contactform').on('shown.bs.modal', function () {
         $(this).scrollTop(0);
@@ -1211,19 +1211,26 @@ Vue.component('contact', __webpack_require__(66));
 Vue.component('popup', __webpack_require__(71));
 Vue.component('contactitem', __webpack_require__(76));
 
-Vue.config.devtools = process.NODE_ENV === 'development';
-Vue.config.debug = process.NODE_ENV === 'development';
-Vue.config.silent = !(process.NODE_ENV === 'development');
+// Vue.config.devtools = (process.NODE_ENV === 'development')
+// Vue.config.debug = (process.NODE_ENV === 'development')
+// Vue.config.silent = !(process.NODE_ENV === 'development')
 
 var app = new Vue({
   el: '#app',
   data: {
+    adverts: __webpack_require__(82),
     apps: __webpack_require__(54),
     searchResults: __webpack_require__(54),
     contact: {},
     store: ""
   },
   methods: {
+    $advert: function $advert() {
+      var keys = Object.keys(this.adverts);
+      var random = Math.floor(Math.random() * keys.length);
+      return keys[random];
+    },
+
     child: function child(value) {
       var _this = this;
 
@@ -1249,11 +1256,25 @@ var app = new Vue({
         });
       }
 
-      //  console.log(testing);
+      var withAds = [];
+      var amount = 7;
+
+      var getAd = function getAd() {
+        var obj = _this.adverts[_this.$advert()];
+        obj.advert = _this.$advert();
+        return obj;
+      };
+
+      _.forEach(this.searchResults, function (app, index) {
+        app.advert = false;
+        withAds.push(app);
+        if (index % amount == amount - 1) withAds.push(getAd());
+      });
+
+      if (this.searchResults.length < amount - 1) this.searchResults.push(getAd());else this.searchResults = withAds;
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ }),
 /* 13 */
@@ -29588,7 +29609,7 @@ module.exports = function listToStyles (parentId, list) {
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = [{"title":"Instagram++","image":"/app-icons/instagram.png","version":"14.0","desc":"Upgrade your Instagram expierence with Instagram++.","dl":"http://destyy.com/q3Yd4y","signed":"http://clkmein.com/q2FuL9"},{"title":"Instagram Rocket","image":"/app-icons/instagram.png","version":"14.0","desc":"Upgrade your Instagram expierence with Instagram Rocket.","dl":"http://destyy.com/q3Yfu8","signed":"http://clkmein.com/q2Fu5A"},{"title":"Snapchat++","image":"/app-icons/snapchat.png","version":"10.17","desc":"Snapchat++ features a lot like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2Im0U","signed":"http://clkmein.com/q2Fi0Y"},{"title":"Phantom for Snapchat","image":"/app-icons/snapchat.png","version":"10.17","desc":"Phantom for Snapchat has features like saving snaps, custom filters, and more! This version includes Phantom Lite v2.3.","dl":"http://clkmein.com/q2FhPd","signed":"http://clkmein.com/q2FiAJ"},{"title":"Snapchat SCOthman","image":"/app-icons/scothman.png","version":"10.17","desc":"Snapchat SCOthman includes features like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2InhR","signed":"http://clkmein.com/q2FiLw"},{"title":"Tinder++","image":"/app-icons/tinder.png","version":"7.5.3","desc":"Upgrade your Tinder expierence with Tinder++. Obtain features like unlimited likes and more!","dl":"http://festyy.com/q3A3db"},{"title":"Twitter++","image":"/app-icons/twitter.png","version":"7.7","desc":"Upgrade your Twitter expierence with Twitter++.","dl":"http://clkmein.com/q2Imh4","signed":"http://clkmein.com/q2FiNp"},{"title":"Youtube++","image":"/app-icons/youtube.png","version":"12.35","desc":"Upgrade your YouTube expierence with YouTube++. Obtain features like no ads and more!","dl":"http://destyy.com/q3YfDa","signed":"http://clkmein.com/q2Fi5W"},{"title":"Cercube 4","image":"/app-icons/youtube.png","version":"12.33","desc":"Upgrade your YouTube expierence with Cercube 4. Obtain features like no ads and more!","dl":"http://destyy.com/q12RgC","signed":"http://clkmein.com/q2Fotv"},{"title":"Youtube Music++","image":"/app-icons/youtube.png","version":"1.92.2","desc":"Upgrade your YouTube Music expierence with YouTube Music++. Obtain features like no ads and more!","dl":"http://clkmein.com/q2IR3Y","signed":"http://clkmein.com/q2Fovj"},{"title":"Facebook++","image":"/app-icons/facebook.png","version":"139","desc":"Upgrade your Facebook expierence with Facebook++.","dl":"http://clkmein.com/q2IERa","signed":"http://clkmein.com/q2FoTq"},{"title":"WhatsApp++","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp++.","dl":"http://destyy.com/q3Ygh6","signed":"http://clkmein.com/q2FoN4"},{"title":"WhatsPad++","image":"/app-icons/whatsapp.png","version":"2.17.51","desc":"Upgrade your WhatsApp expierence with WhatsPad++.","dl":"http://destyy.com/q3YgWK","signed":"http://clkmein.com/q2FoN4"},{"title":"WhatsApp Watusi","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp Watusi.","dl":"http://destyy.com/q3YgAa","signed":"http://clkmein.com/q2FpeC"},{"title":"WhatsApp Watusi + OnlineNotify","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"This special version of Watusi supports notifications.","dl":"http://destyy.com/q3YjAi"},{"title":"Twitch++","image":"/app-icons/twitch.png","version":"5.1.1","desc":"Upgrade your Twitch expierence with Twitch++.","dl":"http://corneey.com/q1RRiF","signed":"http://clkmein.com/q2FpfN"},{"title":"Spotify++","image":"/app-icons/spotify.png","version":"8.4.18","desc":"Upgrade your Spotify expierence with Spotify++. Obtain Spotify Premium for free!","dl":"http://destyy.com/q3YgL3","signed":"http://clkmein.com/q2FpxX"},{"title":"SoundCloud++","image":"/app-icons/soundcloud.png","version":"5.12","desc":"Upgrade your SoundCloud expierence with SoundCloud++. Obtain Soundcloud Go+ for free!","dl":"http://clkmein.com/qBVqkj","signed":"http://clkmein.com/q2Fpm5"},{"title":"DownCloud Pro","image":"/app-icons/downcloud.png","version":"2.0","desc":"Upgrade your SoundCloud expierence with DownCloud Pro. Download any song from SoundCloud for free!","dl":"http://gestyy.com/q2xzR4"},{"title":"Deezer++","image":"/app-icons/deezer.png","version":"6.24.1","desc":"Upgrade your Deezer expierence with Deezer++. Obtain Deezer Premium+ for free!","dl":"http://gestyy.com/q2xunJ","signed":"http://clkmein.com/q2FpTA"},{"title":"Napster++","image":"/app-icons/napster.png","version":"5.11.1","desc":"Upgrade your Napster expierence with Napster++.","dl":"http://clkmein.com/q2IRTg","signed":"http://clkmein.com/q2FpAF"},{"title":"Pandora++","image":"/app-icons/pandora.png","version":"1708.1","desc":"Upgrade your Pandora expierence with Pandora++. Obtain Pandora Premium for free!","dl":"http://destyy.com/q3Yhta","signed":"http://clkmein.com/q2FpNX"},{"title":"Movie Box++","image":"/app-icons/moviebox.png","version":"3.7.2","desc":"Upgrade your Movie Box expierence with Movie Box++. Remove ads from Movie Box!","dl":"http://gestyy.com/q2xgSt","signed":"http://clkmein.com/q2Fazp"},{"title":"Crunchyroll++","image":"/app-icons/crunchyroll.png","version":"3.0.8","desc":"Upgrade your Crunchyroll expierence with Crunchyroll++.","dl":"http://clkmein.com/qBV0A6","signed":"http://clkmein.com/q2Faou"},{"title":"HotspotShield++","image":"/app-icons/hotspot.png","version":"3.7.6","desc":"Upgrade your HotspotShield expierence with HotspotShield++. Obtain HotspotShield Elite for free!","dl":"http://clkmein.com/qBVq81"},{"title":"Betternet++","image":"/app-icons/betternet.png","version":"3.3.21","desc":"Upgrade your Betternet expierence with Betternet++. Obtain Betternet Premium for free!","dl":"http://destyy.com/qN5D6g"},{"title":"NBA++","image":"/app-icons/nba.png","version":"7.053","desc":"Upgrade your NBA expierence with NBA++.","dl":"http://clkmein.com/qBVfyI","signed":"http://clkmein.com/q2FaDQ"},{"title":"PokeGo++ 2.0","image":"/app-icons/pogo.png","version":"r40","desc":"Upgrade your Pokemon Go expierence with PokeGo++ 2.0. Obtain features like teleporting and more!","dl":"http://gestyy.com/q2xsks","signed":"http://clkmein.com/q2FaNd"},{"title":"UFC++","image":"/app-icons/ufc.png","version":"3.2","desc":"Upgrade your UFV expierence with UFC++.","dl":"http://gestyy.com/q2xfsZ","signed":"http://clkmein.com/q2FaKs"},{"title":"123 Movies","image":"/app-icons/123.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with 123 Movies.","dl":"http://clkmein.com/qBVbkp"},{"title":"Bobby Movie","image":"/app-icons/bmovie.png","version":"3.1.6","desc":"Watch movies that are in the theatre and TV shows for free with Bobby Movie.","dl":"http://gestyy.com/q2xfCI","signed":"http://destyy.com/q3YXrV"},{"title":"Bobby Music","image":"/app-icons/bmusic.png","version":"2.0.3","desc":"Listen to any song you want to for free with Bobby Music.","dl":"http://clkmein.com/qBV0eq"},{"title":"Cartoon HD","image":"/app-icons/cartoon.png","version":"2.0","desc":"Watch movies that are in the theatre and TV shows for free with Cartoon HD.","dl":"http://clkmein.com/qBV0ci","signed":"http://clkmein.com/q2Fsep"},{"title":"CienemaBox PB","image":"/app-icons/cb.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with CinemaBox PB.","dl":"http://clkmein.com/qBV0Er"},{"title":"Channels","image":"/app-icons/channels.png","version":"1.3","desc":"Watch live tv for free with Channels.","dl":"http://clkmein.com/qBVx0U","signed":"http://clkmein.com/q2FsuY"},{"title":"Live Wire","image":"/app-icons/livewire.png","version":"1.5","desc":"Watch live tv for free with Live Wire.","dl":"http://clkmein.com/qBVxSu","signed":"http://clkmein.com/q2FssH"},{"title":"FlickJoy","image":"/app-icons/flickjoy.png","version":"1.5","desc":"Watch movies that are in the theatre and TV shows for free with FlickJoy.","dl":"http://clkmein.com/qBVxMI"},{"title":"Popcorn Time","image":"/app-icons/popcorntime.png","version":"3.1.2","desc":"Watch movies that are in the theatre and TV shows for free with Popcorm Time.","dl":"http://clkmein.com/qBVcwz","signed":"http://clkmein.com/q2Fsjs"},{"title":"Surge","image":"/app-icons/surge.png","version":"1.0.1","desc":"Watch live tv for free with Surge.","dl":"http://clkmein.com/qBVvrA"},{"title":"MovieHD","image":"/app-icons/moviehd.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with MovieHD.","dl":"http://clkmein.com/qBVxbn"},{"title":"ToonsNow","image":"/app-icons/toonsnow.png","version":"1.1.2","desc":"Watch movies that are in the theatre and TV shows for free with ToonsNow.","dl":"http://clkmein.com/qBVcCd","signed":"http://clkmein.com/q2FscH"},{"title":"Slick TV","image":"/app-icons/slicktv.png","version":"1.3","desc":"Watch live tv for free with Slick TV.","dl":"http://clkmein.com/qBVcTY"},{"title":"Music Pocket","image":"/app-icons/musicpocket.png","version":"1.0","desc":"Listen to any song you want to for free with Music Pocket.","dl":"http://clkmein.com/qBVvIY"},{"title":"AudioTube","image":"/app-icons/audiotube.png","version":"1.7","desc":"Listen to any song on YouTube you want to for free with AudioTube.","dl":"http://clkmein.com/qBVziG"},{"title":"GBA4iOS","image":"/app-icons/gba.png","version":"2.1","desc":"Play GBA on your device with GBA4iOS.","dl":"http://ceesty.com/qNqBou","signed":"http://clkmein.com/q2FsMM"},{"title":"Happy Chick","image":"/app-icons/happychick.png","version":"1.5.4","desc":"Happy Chick is an advanced multi-emulator app for iOS.","dl":"http://ceesty.com/qNqBU2","signed":"http://clkmein.com/q2Fs60"},{"title":"HandJoy","image":"/app-icons/handjoy.png","version":"1.0","desc":"HandJoy is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsaA"},{"title":"iNDS","image":"/app-icons/inds.png","version":"1.5.4","desc":"Play NDS on your device with iNDS.","dl":"http://ceesty.com/qNq6YV"},{"title":"Mame4ios","image":"/app-icons/mame.png","version":"1.6","desc":"Play arcade games on your device with Mame4ios.","dl":"http://ceesty.com/qNq6M2"},{"title":"RetroArch","image":"/app-icons/retroarch.png","version":"1.6","desc":"RetroArch is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsqQ"},{"title":"Clash of Phoenix","image":"/app-icons/coc.png","version":"8.709.2","desc":"Upgrade your Clash of Clans expierence with Clash of Phoenix. Obtain features like unlimited resources, troops, gems, and more!","dl":"http://ceesty.com/qNwyJH"},{"title":"iSSB","image":"/app-icons/issb.png","version":"2.21","desc":"Play SSB on your device with iSSB.","dl":"http://ceesty.com/qNwuGc"},{"title":"NFL GamePass++","image":"/app-icons/nflgp.png","version":"3.9","desc":"Upgrade your NFL GamePass expierence with NFL GamePass++.","dl":"http://destyy.com/q12kmb"},{"title":"NFL GamePass Europe++","image":"/app-icons/nflgp.png","version":"1.3","desc":"Upgrade your NFL GamePass expierence in Europe with NFL GamePass Europe++.","dl":"http://gestyy.com/q2xKTU"},{"title":"Fily","image":"/app-icons/fily.png","version":"1.1","desc":"Browse and download files on your device with Fily.","dl":"http://ceesty.com/qNwPe5"},{"title":"iFile","image":"/app-icons/ifile.png","version":"2.2","desc":"Browse and download files on your device with iFile.","dl":"http://ceesty.com/qNwPkQ"},{"title":"GoodNight","image":"/app-icons/goodnight.png","version":"1.1.1","desc":"Soothe your eyes at night when looking at your device with GoodNight.","dl":"http://ceesty.com/qNwAqA","signed":"http://clkmein.com/q2FdaF"},{"title":"f.lux","image":"/app-icons/flux.png","version":"1.0.9","desc":"Soothe your eyes at night when looking at your device with f.lux.","dl":"http://corneey.com/q1HOFo"},{"title":"Everycord","image":"/app-icons/everycord.png","version":"1.1.5","desc":"Record your device screen with EveryCord.","dl":"http://gestyy.com/q2xcoF","signed":"http://clkmein.com/q2FdB5"},{"title":"iCleaner","image":"/app-icons/icleaner.png","version":"2.0.1","desc":"Clean up and free space on your device with iCleaner.","dl":"http://destyy.com/qNXsGY","signed":"http://clkmein.com/q2Fdky"},{"title":"Kodi Jarvis","image":"/app-icons/kodi.png","version":"16.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Jarvis.","dl":"http://ceesty.com/qNwASi","signed":"http://clkmein.com/q2Fdbr"},{"title":"Kodi Krypton","image":"/app-icons/kodi.png","version":"17.4","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Krypton.","dl":"http://destyy.com/q3Ylp7","signed":"http://festyy.com/q3AVGM"},{"title":"Kodi Legacy","image":"/app-icons/kodi.png","version":"15.2.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Legacy.","dl":"http://destyy.com/qNXsWe","signed":"https://is.gd/3AEUJc"},{"title":"Kodi Leia","image":"/app-icons/kodi.png","version":"18","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Leia.","dl":"http://ceesty.com/qNwSgn"},{"title":"BatteryLife","image":"/app-icons/batterylife.png","version":"1.7","desc":"Moniter and improve your device's battery with Battery Life.","dl":"http://ceesty.com/qNwOBs"},{"title":"xCleaner","image":"/app-icons/xcleaner.png","version":"1.0.2","desc":"Clean up and free space on your device with xCleaner.","dl":"http://ceesty.com/qNwSLn","signed":"http://clkmein.com/q2FdFw"},{"title":"iDarkMode","image":"/app-icons/idarkmode.png","version":"1.0","desc":"Enable dark mode on your device with iDarkMode.","dl":"http://ceesty.com/qNwDar"},{"title":"Yalu102","image":"/app-icons/yalu.png","version":"b7","desc":"Jailbreak devices running iOS 10-10.2.","signed":"http://destyy.com/q48Voy"},{"title":"Pangu","image":"/app-icons/pangu.png","version":"1.1","desc":"Jailbreak devices running iOS 9.2-9.3.3","signed":"http://clkmein.com/q2FsXu"},{"title":"Phoenix","image":"/app-icons/phoenix.png","version":"3","desc":"Jailbreak devices running iOS 9.3.5","signed":"http://destyy.com/q48MgH"},{"title":"AeroTV","image":"/app-icons/aero.png","version":"b15","desc":"Watch live tv for free with AeroTV.","dl":"http://festyy.com/q3A35q","signed":"http://clkmein.com/q2FsmD"},{"title":"iTD App","image":"/app-icons/itdapp.png","version":"2.1","desc":"Use TweetDeck on your mobile device.","dl":"http://gestyy.com/q37lGy","signed":"http://gestyy.com/q37xP1"},{"title":"LiveRevoke","image":"/app-icons/liverevoke.png","version":"1.0","desc":"See when your favorite third-party AppStores get revoked.","dl":"http://clkmein.com/q4rZRo"},{"title":"PPSSPP","image":"/app-icons/ppsspp.png","version":"1.4.2","desc":"A PSP emulator for your iPhone.","dl":"http://ceesty.com/q4vklh"},{"title":"Provenance iOS","image":"/app-icons/provenance.png","version":"1.3.2","desc":"Provenance supports many different systems including Sega, Nintendo, and as well as Atari.","dl":"http://ceesty.com/q4vltL"},{"title":"Saavn++","image":"/app-icons/saavn.png","version":"5.10","desc":"Listen to your favorite hindi songs for free.","dl":"http://ceesty.com/q4vl3z"}]
+throw new Error("Module build failed: SyntaxError: Unexpected token } in JSON at position 10203\n    at Object.parse (native)\n    at Object.module.exports (/Volumes/Storage/Code/ioshaven/node_modules/json-loader/index.js:4:49)");
 
 /***/ }),
 /* 55 */
@@ -29708,10 +29729,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["title", "image", "version", "desc", "dl", "signed"],
-  mounted: function mounted() {}
+  props: {
+    "image": {
+      required: false
+    },
+    "title": {
+      required: false
+    },
+    "desc": {
+      required: false
+    },
+    "dl": {
+      required: false
+    },
+    "signed": {
+      required: false
+    },
+    "version": {
+      required: false
+    },
+    "advert": {
+      required: false
+    }
+  },
+  data: function data() {
+    return {};
+  },
+
+  methods: {
+    $advert: function $advert() {
+      return this.$parent.adverts[this.advert];
+    }
+  },
+  mounted: function mounted() {
+    console.log('this advert is: ' + this.advert);
+  }
 });
 
 /***/ }),
@@ -29720,8 +29789,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "box2"
-  }, [_c('div', {
+    staticClass: "box2 col-md-4"
+  }, [(_vm.advert) ? _c('div', {
+    staticClass: "inside"
+  }, [_c('h4', {
+    staticClass: "center color-black"
+  }), _vm._v(" "), _c('img', {
+    staticClass: "center-block",
+    attrs: {
+      "src": _vm.$advert().image
+    }
+  }), _vm._v(" "), _c('popup', {
+    attrs: {
+      "advert": true,
+      "image": _vm.$advert().image,
+      "title": _vm.$advert().title,
+      "description": _vm.$advert().desc,
+      "dl": "",
+      "signed": _vm.$advert().link,
+      "version": ""
+    }
+  }), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-success center-dl center-s-dl",
+    attrs: {
+      "href": _vm.$advert().link
+    }
+  }, [_vm._v("Promotion")])], 1) : _c('div', {
     staticClass: "inside"
   }, [_c('h4', {
     staticClass: "center color-black"
@@ -29734,6 +29827,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "center color-black"
   }, [_vm._v(_vm._s(_vm.version))]), _vm._v(" "), _c('popup', {
     attrs: {
+      "advert": false,
       "image": _vm.image,
       "title": _vm.title,
       "description": _vm.desc,
@@ -30389,7 +30483,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.desc[data-v-43a1474a] {\n  padding: 30px;\n  width: 100%;\n  color: #444 !important;\n  margin: 4px 0px;\n  background: transparent;\n  border: 1px solid #444;\n}\n.win[data-v-43a1474a] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  background: white;\n  border: 2px solid #000;\n  box-shadow: 0px 2px 29px 10000px rgba(0, 0, 0, 0.75);\n  border-radius: 5px;\n  z-index: 999999;\n  max-width: 960px;\n  margin: 30px auto;\n}\n@media screen and (max-width: 576px) {\n.win[data-v-43a1474a] {\n      margin: 10px auto !important;\n}\n}\n@media screen and (max-width: 768px) {\n.win[data-v-43a1474a] {\n      margin: 20px auto !important;\n}\n}\n@media screen and (max-width: 992px) {\n.win[data-v-43a1474a] {\n      margin: 50px auto !important;\n}\n}\n.win-content[data-v-43a1474a] {\n  padding: 2em;\n  border-bottom: 1px solid #ccc;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  text-align: left;\n  color: #333;\n}\n.win-content.win-header[data-v-43a1474a] {\n  height: 5em;\n}\n.win-content.win-body[data-v-43a1474a] {\n  align-items: start;\n  border-bottom: none;\n  padding: 1em 1.5em 2em;\n  font-size: 1.3em;\n  letter-spacing: 0.7px;\n  line-height: 1.4em;\n  max-height: 50vh;\n  overflow-y: auto;\n}\n.win-header span[data-v-43a1474a] {\n  font-size: 1.2em;\n  font-weight: 600;\n}\n.appIMG[data-v-43a1474a] {\n  display: inline-block;\n  padding: 50px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: contain;\n  margin-right: 20px;\n  float: left;\n}\n.title[data-v-43a1474a] {\n  font-size: 1.4em !important;\n  max-width: 70%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: pre;\n}\n.win-footer[data-v-43a1474a] {\n  border-top: 1px solid #ccc;\n  padding: 1em 2em;\n  font-size: 1em;\n}\n@media screen and (max-width: 576px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.7em;\n}\n}\n@media screen and (max-width: 400px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.6em;\n}\n}\n.win-footer .span[data-v-43a1474a] {\n    color: #aaa !important;\n    font-size: inherit !important;\n}\n.win-footer div[data-v-43a1474a] {\n    text-align: right;\n}\n.win-footer a[data-v-43a1474a] {\n    padding: 1.5em;\n    font-size: inherit !important;\n}\n", ""]);
+exports.push([module.i, "\n.desc[data-v-43a1474a] {\n  padding: 30px;\n  width: 100%;\n  color: #444 !important;\n  margin: 4px 0px;\n  background: transparent;\n  border: 1px solid #444;\n}\n.win[data-v-43a1474a] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  background: white;\n  border: 2px solid #000;\n  box-shadow: 0px 2px 29px 10000px rgba(0, 0, 0, 0.75);\n  border-radius: 5px;\n  z-index: 999999;\n  max-width: 960px;\n  margin: 30px auto;\n}\n@media screen and (max-width: 576px) {\n.win[data-v-43a1474a] {\n      margin: 10px auto !important;\n}\n}\n@media screen and (max-width: 768px) {\n.win[data-v-43a1474a] {\n      margin: 20px auto !important;\n}\n}\n@media screen and (max-width: 992px) {\n.win[data-v-43a1474a] {\n      margin: 50px auto !important;\n}\n}\n.win-content[data-v-43a1474a] {\n  padding: 2em;\n  border-bottom: 1px solid #ccc;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  text-align: left;\n  color: #333;\n}\n.win-content.win-header[data-v-43a1474a] {\n  height: 5em;\n}\n.win-content.win-body[data-v-43a1474a] {\n  align-items: start;\n  border-bottom: none;\n  padding: 1em 1.5em 2em;\n  font-size: 1.3em;\n  letter-spacing: 0.7px;\n  line-height: 1.4em;\n  max-height: 50vh;\n  overflow-y: auto;\n}\n.win-header span[data-v-43a1474a] {\n  font-size: 1.2em;\n  font-weight: 600;\n}\n.appIMG[data-v-43a1474a] {\n  display: inline-block;\n  padding: 50px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: contain;\n  margin-right: 20px;\n  float: left;\n}\n.title[data-v-43a1474a] {\n  font-size: 1.4em !important;\n  max-width: 70%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: pre;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 1rem 0;\n}\n.win-footer[data-v-43a1474a] {\n  border-top: 1px solid #ccc;\n  padding: 1em 2em;\n  font-size: 1em;\n}\n@media screen and (max-width: 576px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.7em;\n}\n}\n@media screen and (max-width: 400px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.6em;\n}\n}\n.win-footer .span[data-v-43a1474a] {\n    color: #aaa !important;\n    font-size: inherit !important;\n}\n.win-footer div[data-v-43a1474a] {\n    text-align: right;\n}\n.win-footer a[data-v-43a1474a] {\n    padding: 1.5em;\n    font-size: inherit !important;\n}\nspan.ad[data-v-43a1474a] {\n  font-size: 0.8rem !important;\n  font-weight: 100 !important;\n  background: #61c361;\n  color: white;\n  padding: 0rem 1rem;\n  border-radius: 10rem;\n  margin-left: 1rem;\n}\n", ""]);
 
 // exports
 
@@ -30432,9 +30526,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['title', 'description', 'image', 'dl', 'signed', 'version'],
+  props: ['title', 'description', 'image', 'dl', 'signed', 'version', 'advert'],
   data: function data() {
     return {
       show: false
@@ -30470,7 +30570,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "win-content win-header"
   }, [_c('span', {
     staticClass: "title"
-  }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('span', {
+  }, [_c('span', [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), (_vm.advert) ? _c('span', {
+    staticClass: "ad"
+  }, [_vm._v("Promoted")]) : _vm._e()]), _vm._v(" "), _c('span', {
     staticClass: "close",
     on: {
       "click": function($event) {
@@ -30478,7 +30580,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("close "), _c('i', {
-    staticClass: "fa fa-close"
+    staticClass: "fas fa-times"
   })])]), _vm._v(" "), _c('div', {
     staticClass: "win-content win-body"
   }, [_c('span', [_c('div', {
@@ -30488,12 +30590,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }), _vm._v("\n        " + _vm._s(_vm.description) + "\n      ")])]), _vm._v(" "), _c('div', {
     staticClass: "win-content win-footer"
-  }, [_c('span', [_vm._v("Version: " + _vm._s(_vm.version))]), _vm._v(" "), _c('div', {}, [(_vm.dl) ? _c('a', {
+  }, [(!_vm.advert) ? _c('span', [_vm._v("Version: " + _vm._s(_vm.version))]) : _vm._e(), _vm._v(" "), (_vm.advert) ? _c('span') : _vm._e(), _vm._v(" "), _c('div', {}, [(_vm.advert) ? _c('a', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "href": _vm.signed
+    }
+  }, [_vm._v("View Promotion")]) : _vm._e(), _vm._v(" "), (_vm.dl && !_vm.advert) ? _c('a', {
     staticClass: "btn btn-primary",
     attrs: {
       "href": _vm.dl
     }
-  }, [_vm._v("Download.ipa")]) : _vm._e(), _vm._v(" "), (_vm.signed) ? _c('a', {
+  }, [_vm._v("Download.ipa")]) : _vm._e(), _vm._v(" "), (_vm.signed && !_vm.advert) ? _c('a', {
     staticClass: "btn btn-success",
     attrs: {
       "href": _vm.signed
@@ -30805,6 +30912,12 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-ccffdc1e", module.exports)
   }
 }
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports) {
+
+module.exports = {"digitalocean":{"advert":"true","image":"app-icons/DigitalOcean_logo.png","title":"Digital Ocean","link":"http://pages.news.digitalocean.com/dc/AyKQ30vur1Nt8H30LIWxk-j5xHmafGnoECQwn1ooO76ScszS35unZz_h2H_F8nD6n_mnk_qDkjx0_GRgx6WpvA==/ZIXcv004V0002n0Es306DES","desc":"DigitalOcean is a cloud hosting provider built for developers and ran strictly on high-performance Solid State Disks. DigitalOcean offers six popular Linux distributions that can be automatically pre-installed upon deployment of a server: Ubuntu, CentOS, Debian, Fedora, CoreOS and FreeBSD. A multitude of application packages can be installed with just one click, including LAMP, LEMP, and MEAN; also development frameworks Ruby on Rails, Django and Docker; as well as popular applications like eCommerce software Magento, CMS solutions Wordpress and Ghost, and MediaWiki. With the help the Simple Control Panel, you can get a server up and running in less than one minute! All for a little as $5 a month!!Luckily DigitalOcean reached out to us and gave us a discount for our users. If you sign up today they will give you $10 towards your next purchase. We have been using DigitalOcean for over a year, not only on this site but on many other sites and projects. So trust us when we say DigitalOcean provides a fantastic service. What do you say? Do you want to give DigitalOcean a try? Click the link below when you are ready."}}
 
 /***/ })
 /******/ ]);

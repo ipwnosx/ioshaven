@@ -16,8 +16,8 @@ $(document).ready(function (){
   })
 
   $('a').click(function (e) {
-    e.preventDefault()
     if (e.target.hash === '#contact') {
+      e.preventDefault()
       $('#contactform').modal('show')
       $('#contactform').on('shown.bs.modal', function () {
         $(this).scrollTop(0);
@@ -32,21 +32,26 @@ Vue.component('contact', require('./components/contact.vue'))
 Vue.component('popup', require('./components/popup.vue'))
 Vue.component('contactitem', require('./components/contactItem.vue'))
 
-Vue.config.devtools = (process.NODE_ENV === 'development')
-Vue.config.debug = (process.NODE_ENV === 'development')
-Vue.config.silent = !(process.NODE_ENV === 'development')
+// Vue.config.devtools = (process.NODE_ENV === 'development')
+// Vue.config.debug = (process.NODE_ENV === 'development')
+// Vue.config.silent = !(process.NODE_ENV === 'development')
 
 const app = new Vue({
   el: '#app',
   data: {
+    adverts: require('./adverts.json'),
     apps: require('./sideload-apps.json'),
     searchResults: require('./sideload-apps.json'),
     contact: {},
     store: ""
   },
   methods: {
+    $advert(){
+      let keys = Object.keys(this.adverts)
+      let random = Math.floor(Math.random() * keys.length)
+      return keys[random]
+    },
     child: function(value){
-
       this.searchResults = _.sortBy(this.apps, [function (o){
         return o.title.toLowerCase()
       }])
@@ -69,7 +74,24 @@ const app = new Vue({
         })
       }
 
-      //  console.log(testing);
+      let withAds = []
+      let amount = 7
+
+      let getAd = () =>{
+        let obj = this.adverts[this.$advert()]
+        obj.advert = this.$advert()
+        return obj
+      }
+
+      _.forEach(this.searchResults, (app, index) => {
+        app.advert = false
+        withAds.push(app)
+        if (index%amount == amount-1) withAds.push(getAd())
+      })
+
+      if (this.searchResults.length < amount-1) this.searchResults.push(getAd())
+      else this.searchResults = withAds
+
     },
   }
 })

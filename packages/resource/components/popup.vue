@@ -6,8 +6,12 @@
 
     <div class="win" v-if="show">
       <div class="win-content win-header">
-        <span class="title">{{title}}</span>
-        <span @click="show = false" class="close">close <i class="fa fa-close"></i></span>
+        <span class="title">
+          <span>{{title}}</span>
+          <span class="ad" v-if="advert">Promoted</span>
+        </span>
+
+        <span @click="show = false" class="close">close <i class="fas fa-times"></i></span>
       </div>
       <div class="win-content win-body">
         <span>
@@ -16,10 +20,12 @@
         </span>
       </div>
       <div class="win-content win-footer">
-        <span>Version: {{version}}</span>
+        <span v-if="!advert">Version: {{version}}</span>
+        <span v-if="advert"></span>
         <div class="">
-          <a :href="dl" class="btn btn-primary" v-if="dl">Download.ipa</a>
-          <a :href="signed" class="btn btn-success" v-if="signed">Install Signed</a>
+          <a :href="signed" class="btn btn-primary" v-if="advert">View Promotion</a>
+          <a :href="dl" class="btn btn-primary" v-if="dl && !advert">Download.ipa</a>
+          <a :href="signed" class="btn btn-success" v-if="signed && !advert">Install Signed</a>
         </div>
 
       </div>
@@ -32,7 +38,7 @@
 
 <script>
 export default {
-  props: ['title', 'description', 'image', 'dl', 'signed', 'version'],
+  props: ['title', 'description', 'image', 'dl', 'signed', 'version', 'advert'],
   data() {
     return {
       show: false,
@@ -129,6 +135,10 @@ $large: 50px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
 }
 
 .win-footer{
@@ -154,4 +164,13 @@ $large: 50px;
   }
 }
 
+span.ad {
+    font-size: 0.8rem !important;
+    font-weight: 100 !important;
+    background: #61c361;
+    color: white;
+    padding: 0rem 1rem;
+    border-radius: 10rem;
+    margin-left: 1rem;
+}
 </style>
