@@ -81,7 +81,7 @@
   {
     "title": "Facebook++",
     "image": "/app-icons/facebook.png",
-    "version": "139",
+    "version": "141.0",
     "desc": "Upgrade your Facebook expierence with Facebook++.",
     "dl": "http://clkmein.com/q2IERa",
     "signed": "http://clkmein.com/q2FoTq"
@@ -92,14 +92,6 @@
     "version": "2.17.52",
     "desc": "Upgrade your WhatsApp expierence with WhatsApp++.",
     "dl": "http://destyy.com/q3Ygh6",
-    "signed": "http://clkmein.com/q2FoN4"
-  },
-  {
-    "title": "WhatsPad++",
-    "image": "/app-icons/whatsapp.png",
-    "version": "2.17.51",
-    "desc": "Upgrade your WhatsApp expierence with WhatsPad++.",
-    "dl": "http://destyy.com/q3YgWK",
     "signed": "http://clkmein.com/q2FoN4"
   },
   {
@@ -138,7 +130,6 @@
     "image": "/app-icons/soundcloud.png",
     "version": "5.12",
     "desc": "Upgrade your SoundCloud expierence with SoundCloud++. Obtain Soundcloud Go+ for free!",
-    "dl": "http://clkmein.com/qBVqkj",
     "signed": "http://clkmein.com/q2Fpm5"
   },
   {
@@ -189,11 +180,18 @@
     "signed": "http://clkmein.com/q2Faou"
   },
   {
-    "title": "HotspotShield++",
-    "image": "/app-icons/hotspot.png",
-    "version": "3.7.6",
-    "desc": "Upgrade your HotspotShield expierence with HotspotShield++. Obtain HotspotShield Elite for free!",
-    "dl": "http://clkmein.com/qBVq81"
+    "title": "Snapchat Pink",
+    "image": "/app-icons/scpink.png",
+    "version": "iOS 10 & 11",
+    "desc": "Upgrade your Snapchat expierence with Snapchat Pink.",
+    "signed": "http://festyy.com/q65BGn"
+  },
+  {
+    "title": "iCapture 10",
+    "image": "/app-icons/ic10.jpg",
+    "version": "3.0-b48",
+    "desc": "Record your device screen with iCapture 10.",
+    "dl": "http://festyy.com/q651tB"
   },
   {
     "title": "Betternet++",
@@ -223,7 +221,6 @@
     "image": "/app-icons/ufc.png",
     "version": "3.2",
     "desc": "Upgrade your UFV expierence with UFC++.",
-    "dl": "http://gestyy.com/q2xfsZ",
     "signed": "http://clkmein.com/q2FaKs"
   },
   {
@@ -253,7 +250,6 @@
     "image": "/app-icons/cartoon.png",
     "version": "2.0",
     "desc": "Watch movies that are in the theatre and TV shows for free with Cartoon HD.",
-    "dl": "http://clkmein.com/qBV0ci",
     "signed": "http://clkmein.com/q2Fsep"
   },
   {
@@ -314,7 +310,6 @@
     "version": "1.1.2",
     "desc": "Watch movies that are in the theatre and TV shows for free with ToonsNow.",
     "dl": "http://clkmein.com/qBVcCd",
-    "signed": "http://clkmein.com/q2FscH"
   },
   {
     "title": "Slick TV",
@@ -350,7 +345,6 @@
     "image": "/app-icons/happychick.png",
     "version": "1.5.4",
     "desc": "Happy Chick is an advanced multi-emulator app for iOS.",
-    "dl": "http://ceesty.com/qNqBU2",
     "signed": "http://clkmein.com/q2Fs60"
   },
   {
@@ -366,13 +360,6 @@
     "version": "1.5.4",
     "desc": "Play NDS on your device with iNDS.",
     "dl": "http://ceesty.com/qNq6YV"
-  },
-  {
-    "title": "Mame4ios",
-    "image": "/app-icons/mame.png",
-    "version": "1.6",
-    "desc": "Play arcade games on your device with Mame4ios.",
-    "dl": "http://ceesty.com/qNq6M2"
   },
   {
     "title": "RetroArch",
@@ -422,14 +409,6 @@
     "version": "2.2",
     "desc": "Browse and download files on your device with iFile.",
     "dl": "http://ceesty.com/qNwPkQ"
-  },
-  {
-    "title": "GoodNight",
-    "image": "/app-icons/goodnight.png",
-    "version": "1.1.1",
-    "desc": "Soothe your eyes at night when looking at your device with GoodNight.",
-    "dl": "http://ceesty.com/qNwAqA",
-    "signed": "http://clkmein.com/q2FdaF"
   },
   {
     "title": "f.lux",
@@ -537,14 +516,6 @@
     "signed": "http://clkmein.com/q2FsmD"
   },
   {
-    "title": "iTD App",
-    "image": "/app-icons/itdapp.png",
-    "version": "2.1",
-    "desc": "Use TweetDeck on your mobile device.",
-    "dl": "http://gestyy.com/q37lGy",
-    "signed": "http://gestyy.com/q37xP1"
-  },
-  {
     "title": "LiveRevoke",
     "image": "/app-icons/liverevoke.png",
     "version": "1.0",
@@ -559,11 +530,11 @@
     "dl": "http://ceesty.com/q4vklh"
   },
   {
-    "title": "Provenance iOS",
-    "image": "/app-icons/provenance.png",
-    "version": "1.3.2",
-    "desc": "Provenance supports many different systems including Sega, Nintendo, and as well as Atari.",
-    "dl": "http://ceesty.com/q4vltL"
+    "title": "Hotspot Shield++",
+    "image": "/app-icons/hotspot.png",
+    "version": "3.7.7",
+    "desc": "Upgrade your Hotspot Shield expierence with Hotspot Shield++. Obtain Hotspot Shield Elite for free!",
+    "dl": "http://festyy.com/q65Vdn"
   },
   {
     "title": "Saavn++",
