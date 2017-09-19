@@ -24,8 +24,6 @@ app.use(bodyParser.json())
 var env = require('./env.json')
 
 app.get('/', home)
-app.get('/ipas', apps)
-app.get('/signed', apps)
 app.get('/apps', apps)
 app.get('/betas', betas)
 app.get('/jailbreaks', jailbreaks)
