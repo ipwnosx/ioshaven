@@ -16,8 +16,8 @@
         <search v-on:result="child"></search>
       </div>
       <div class="row">
-        <!-- <div class="app-adverts col-md-4 " > -->
           <flexbox
+                  v-if="!loading"
                   v-for="(app, index) in searchResults"
                   key="app.key"
                   :advert="app.advert"
@@ -29,12 +29,6 @@
                   :signed="app.signed">
           </flexbox>
 
-          <!-- <flexbox
-                  v-for="(app, index) in searchResults"
-                  v-if="index%4"
-                  :advert="true">
-          </flexbox> -->
-        <!-- </div> -->
       </div>
     </div>
   </article>

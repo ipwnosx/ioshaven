@@ -14,3 +14,4 @@ let mix = require('laravel-mix');
 mix.js('packages/resource/project.js', 'assets/js')
    .sass('packages/resource/project.scss', 'assets/css')
    .sass('packages/resource/bootstrap.scss', 'assets/css')
+   .sass('packages/resource/markdown.scss', 'assets/css')

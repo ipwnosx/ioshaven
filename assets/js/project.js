@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,8 +70,8 @@
 "use strict";
 
 
-var bind = __webpack_require__(7);
-var isBuffer = __webpack_require__(20);
+var bind = __webpack_require__(6);
+var isBuffer = __webpack_require__(19);
 
 /*global toString:true*/
 
@@ -797,10 +797,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(8);
+    adapter = __webpack_require__(7);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(8);
+    adapter = __webpack_require__(7);
   }
   return adapter;
 }
@@ -871,200 +871,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1091,7 +901,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1109,7 +919,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1120,7 +930,7 @@ var settle = __webpack_require__(23);
 var buildURL = __webpack_require__(25);
 var parseHeaders = __webpack_require__(26);
 var isURLSameOrigin = __webpack_require__(27);
-var createError = __webpack_require__(9);
+var createError = __webpack_require__(8);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(28);
 
 module.exports = function xhrAdapter(config) {
@@ -1296,7 +1106,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1321,7 +1131,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1333,7 +1143,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1359,29 +1169,30 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports) {
 
-module.exports = [{"title":"Instagram++","image":"/app-icons/instagram.png","version":"14.0","desc":"Upgrade your Instagram expierence with Instagram++.","dl":"http://destyy.com/q3Yd4y","signed":"http://clkmein.com/q2FuL9"},{"title":"Instagram Rocket","image":"/app-icons/instagram.png","version":"14.0","desc":"Upgrade your Instagram expierence with Instagram Rocket.","dl":"http://destyy.com/q3Yfu8","signed":"http://clkmein.com/q2Fu5A"},{"title":"Snapchat++","image":"/app-icons/snapchat.png","version":"10.17","desc":"Snapchat++ features a lot like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2Im0U","signed":"http://clkmein.com/q2Fi0Y"},{"title":"Phantom for Snapchat","image":"/app-icons/snapchat.png","version":"10.17","desc":"Phantom for Snapchat has features like saving snaps, custom filters, and more! This version includes Phantom Lite v2.3.","dl":"http://clkmein.com/q2FhPd","signed":"http://clkmein.com/q2FiAJ"},{"title":"Snapchat SCOthman","image":"/app-icons/scothman.png","version":"10.17","desc":"Snapchat SCOthman includes features like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2InhR","signed":"http://clkmein.com/q2FiLw"},{"title":"Tinder++","image":"/app-icons/tinder.png","version":"7.5.3","desc":"Upgrade your Tinder expierence with Tinder++. Obtain features like unlimited likes and more!","dl":"http://festyy.com/q3A3db"},{"title":"Twitter++","image":"/app-icons/twitter.png","version":"7.7","desc":"Upgrade your Twitter expierence with Twitter++.","dl":"http://clkmein.com/q2Imh4","signed":"http://clkmein.com/q2FiNp"},{"title":"Youtube++","image":"/app-icons/youtube.png","version":"12.35","desc":"Upgrade your YouTube expierence with YouTube++. Obtain features like no ads and more!","dl":"http://destyy.com/q3YfDa","signed":"http://clkmein.com/q2Fi5W"},{"title":"Cercube 4","image":"/app-icons/youtube.png","version":"12.33","desc":"Upgrade your YouTube expierence with Cercube 4. Obtain features like no ads and more!","dl":"http://destyy.com/q12RgC","signed":"http://clkmein.com/q2Fotv"},{"title":"Youtube Music++","image":"/app-icons/youtube.png","version":"1.92.2","desc":"Upgrade your YouTube Music expierence with YouTube Music++. Obtain features like no ads and more!","dl":"http://clkmein.com/q2IR3Y","signed":"http://clkmein.com/q2Fovj"},{"title":"Facebook++","image":"/app-icons/facebook.png","version":"141.0","desc":"Upgrade your Facebook expierence with Facebook++.","dl":"http://clkmein.com/q2IERa","signed":"http://clkmein.com/q2FoTq"},{"title":"WhatsApp++","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp++.","dl":"http://destyy.com/q3Ygh6","signed":"http://clkmein.com/q2FoN4"},{"title":"WhatsApp Watusi","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp Watusi.","dl":"http://destyy.com/q3YgAa","signed":"http://clkmein.com/q2FpeC"},{"title":"WhatsApp Watusi + OnlineNotify","image":"/app-icons/whatsapp.png","version":"2.17.52","desc":"This special version of Watusi supports notifications.","dl":"http://destyy.com/q3YjAi"},{"title":"Twitch++","image":"/app-icons/twitch.png","version":"5.1.1","desc":"Upgrade your Twitch expierence with Twitch++.","dl":"http://corneey.com/q1RRiF","signed":"http://clkmein.com/q2FpfN"},{"title":"Spotify++","image":"/app-icons/spotify.png","version":"8.4.18","desc":"Upgrade your Spotify expierence with Spotify++. Obtain Spotify Premium for free!","dl":"http://destyy.com/q3YgL3","signed":"http://clkmein.com/q2FpxX"},{"title":"SoundCloud++","image":"/app-icons/soundcloud.png","version":"5.12","desc":"Upgrade your SoundCloud expierence with SoundCloud++. Obtain Soundcloud Go+ for free!","signed":"http://clkmein.com/q2Fpm5"},{"title":"DownCloud Pro","image":"/app-icons/downcloud.png","version":"2.0","desc":"Upgrade your SoundCloud expierence with DownCloud Pro. Download any song from SoundCloud for free!","dl":"http://gestyy.com/q2xzR4"},{"title":"Deezer++","image":"/app-icons/deezer.png","version":"6.24.1","desc":"Upgrade your Deezer expierence with Deezer++. Obtain Deezer Premium+ for free!","dl":"http://gestyy.com/q2xunJ","signed":"http://clkmein.com/q2FpTA"},{"title":"Napster++","image":"/app-icons/napster.png","version":"5.11.1","desc":"Upgrade your Napster expierence with Napster++.","dl":"http://clkmein.com/q2IRTg","signed":"http://clkmein.com/q2FpAF"},{"title":"Pandora++","image":"/app-icons/pandora.png","version":"1708.1","desc":"Upgrade your Pandora expierence with Pandora++. Obtain Pandora Premium for free!","dl":"http://destyy.com/q3Yhta","signed":"http://clkmein.com/q2FpNX"},{"title":"Movie Box++","image":"/app-icons/moviebox.png","version":"3.7.2","desc":"Upgrade your Movie Box expierence with Movie Box++. Remove ads from Movie Box!","dl":"http://gestyy.com/q2xgSt","signed":"http://clkmein.com/q2Fazp"},{"title":"Crunchyroll++","image":"/app-icons/crunchyroll.png","version":"3.0.8","desc":"Upgrade your Crunchyroll expierence with Crunchyroll++.","dl":"http://clkmein.com/qBV0A6","signed":"http://clkmein.com/q2Faou"},{"title":"Snapchat Pink","image":"/app-icons/scpink.png","version":"iOS 10 & 11","desc":"Upgrade your Snapchat expierence with Snapchat Pink.","signed":"http://festyy.com/q65BGn"},{"title":"iCapture 10","image":"/app-icons/ic10.jpg","version":"3.0-b48","desc":"Record your device screen with iCapture 10.","dl":"http://festyy.com/q651tB"},{"title":"Betternet++","image":"/app-icons/betternet.png","version":"3.3.21","desc":"Upgrade your Betternet expierence with Betternet++. Obtain Betternet Premium for free!","dl":"http://destyy.com/qN5D6g"},{"title":"NBA++","image":"/app-icons/nba.png","version":"7.053","desc":"Upgrade your NBA expierence with NBA++.","dl":"http://clkmein.com/qBVfyI","signed":"http://clkmein.com/q2FaDQ"},{"title":"PokeGo++ 2.0","image":"/app-icons/pogo.png","version":"r40","desc":"Upgrade your Pokemon Go expierence with PokeGo++ 2.0. Obtain features like teleporting and more!","dl":"http://gestyy.com/q2xsks","signed":"http://clkmein.com/q2FaNd"},{"title":"UFC++","image":"/app-icons/ufc.png","version":"3.2","desc":"Upgrade your UFV expierence with UFC++.","signed":"http://clkmein.com/q2FaKs"},{"title":"123 Movies","image":"/app-icons/123.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with 123 Movies.","dl":"http://clkmein.com/qBVbkp"},{"title":"Bobby Movie","image":"/app-icons/bmovie.png","version":"3.1.6","desc":"Watch movies that are in the theatre and TV shows for free with Bobby Movie.","dl":"http://gestyy.com/q2xfCI","signed":"http://destyy.com/q3YXrV"},{"title":"Bobby Music","image":"/app-icons/bmusic.png","version":"2.0.3","desc":"Listen to any song you want to for free with Bobby Music.","dl":"http://clkmein.com/qBV0eq"},{"title":"Cartoon HD","image":"/app-icons/cartoon.png","version":"2.0","desc":"Watch movies that are in the theatre and TV shows for free with Cartoon HD.","signed":"http://clkmein.com/q2Fsep"},{"title":"CienemaBox PB","image":"/app-icons/cb.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with CinemaBox PB.","dl":"http://clkmein.com/qBV0Er"},{"title":"Channels","image":"/app-icons/channels.png","version":"1.3","desc":"Watch live tv for free with Channels.","dl":"http://clkmein.com/qBVx0U","signed":"http://clkmein.com/q2FsuY"},{"title":"Live Wire","image":"/app-icons/livewire.png","version":"1.5","desc":"Watch live tv for free with Live Wire.","dl":"http://clkmein.com/qBVxSu","signed":"http://clkmein.com/q2FssH"},{"title":"FlickJoy","image":"/app-icons/flickjoy.png","version":"1.5","desc":"Watch movies that are in the theatre and TV shows for free with FlickJoy.","dl":"http://clkmein.com/qBVxMI"},{"title":"Popcorn Time","image":"/app-icons/popcorntime.png","version":"3.1.2","desc":"Watch movies that are in the theatre and TV shows for free with Popcorm Time.","dl":"http://clkmein.com/qBVcwz","signed":"http://clkmein.com/q2Fsjs"},{"title":"Surge","image":"/app-icons/surge.png","version":"1.0.1","desc":"Watch live tv for free with Surge.","dl":"http://clkmein.com/qBVvrA"},{"title":"MovieHD","image":"/app-icons/moviehd.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with MovieHD.","dl":"http://clkmein.com/qBVxbn"},{"title":"ToonsNow","image":"/app-icons/toonsnow.png","version":"1.1.2","desc":"Watch movies that are in the theatre and TV shows for free with ToonsNow.","dl":"http://clkmein.com/qBVcCd"},{"title":"Slick TV","image":"/app-icons/slicktv.png","version":"1.3","desc":"Watch live tv for free with Slick TV.","dl":"http://clkmein.com/qBVcTY"},{"title":"Music Pocket","image":"/app-icons/musicpocket.png","version":"1.0","desc":"Listen to any song you want to for free with Music Pocket.","dl":"http://clkmein.com/qBVvIY"},{"title":"AudioTube","image":"/app-icons/audiotube.png","version":"1.7","desc":"Listen to any song on YouTube you want to for free with AudioTube.","dl":"http://clkmein.com/qBVziG"},{"title":"GBA4iOS","image":"/app-icons/gba.png","version":"2.1","desc":"Play GBA on your device with GBA4iOS.","dl":"http://ceesty.com/qNqBou","signed":"http://clkmein.com/q2FsMM"},{"title":"Happy Chick","image":"/app-icons/happychick.png","version":"1.5.4","desc":"Happy Chick is an advanced multi-emulator app for iOS.","signed":"http://clkmein.com/q2Fs60"},{"title":"HandJoy","image":"/app-icons/handjoy.png","version":"1.0","desc":"HandJoy is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsaA"},{"title":"iNDS","image":"/app-icons/inds.png","version":"1.5.4","desc":"Play NDS on your device with iNDS.","dl":"http://ceesty.com/qNq6YV"},{"title":"RetroArch","image":"/app-icons/retroarch.png","version":"1.6","desc":"RetroArch is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsqQ"},{"title":"Clash of Phoenix","image":"/app-icons/coc.png","version":"8.709.2","desc":"Upgrade your Clash of Clans expierence with Clash of Phoenix. Obtain features like unlimited resources, troops, gems, and more!","dl":"http://ceesty.com/qNwyJH"},{"title":"iSSB","image":"/app-icons/issb.png","version":"2.21","desc":"Play SSB on your device with iSSB.","dl":"http://ceesty.com/qNwuGc"},{"title":"NFL GamePass++","image":"/app-icons/nflgp.png","version":"3.9","desc":"Upgrade your NFL GamePass expierence with NFL GamePass++.","dl":"http://destyy.com/q12kmb"},{"title":"NFL GamePass Europe++","image":"/app-icons/nflgp.png","version":"1.3","desc":"Upgrade your NFL GamePass expierence in Europe with NFL GamePass Europe++.","dl":"http://gestyy.com/q2xKTU"},{"title":"Fily","image":"/app-icons/fily.png","version":"1.1","desc":"Browse and download files on your device with Fily.","dl":"http://ceesty.com/qNwPe5"},{"title":"iFile","image":"/app-icons/ifile.png","version":"2.2","desc":"Browse and download files on your device with iFile.","dl":"http://ceesty.com/qNwPkQ"},{"title":"f.lux","image":"/app-icons/flux.png","version":"1.0.9","desc":"Soothe your eyes at night when looking at your device with f.lux.","dl":"http://corneey.com/q1HOFo"},{"title":"Everycord","image":"/app-icons/everycord.png","version":"1.1.5","desc":"Record your device screen with EveryCord.","dl":"http://gestyy.com/q2xcoF","signed":"http://clkmein.com/q2FdB5"},{"title":"iCleaner","image":"/app-icons/icleaner.png","version":"2.0.1","desc":"Clean up and free space on your device with iCleaner.","dl":"http://destyy.com/qNXsGY","signed":"http://clkmein.com/q2Fdky"},{"title":"Kodi Jarvis","image":"/app-icons/kodi.png","version":"16.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Jarvis.","dl":"http://ceesty.com/qNwASi","signed":"http://clkmein.com/q2Fdbr"},{"title":"Kodi Krypton","image":"/app-icons/kodi.png","version":"17.4","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Krypton.","dl":"http://destyy.com/q3Ylp7","signed":"http://festyy.com/q3AVGM"},{"title":"Kodi Legacy","image":"/app-icons/kodi.png","version":"15.2.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Legacy.","dl":"http://destyy.com/qNXsWe","signed":"https://is.gd/3AEUJc"},{"title":"Kodi Leia","image":"/app-icons/kodi.png","version":"18","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Leia.","dl":"http://ceesty.com/qNwSgn"},{"title":"BatteryLife","image":"/app-icons/batterylife.png","version":"1.7","desc":"Moniter and improve your device's battery with Battery Life.","dl":"http://ceesty.com/qNwOBs"},{"title":"xCleaner","image":"/app-icons/xcleaner.png","version":"1.0.2","desc":"Clean up and free space on your device with xCleaner.","dl":"http://ceesty.com/qNwSLn","signed":"http://clkmein.com/q2FdFw"},{"title":"iDarkMode","image":"/app-icons/idarkmode.png","version":"1.0","desc":"Enable dark mode on your device with iDarkMode.","dl":"http://ceesty.com/qNwDar"},{"title":"Yalu102","image":"/app-icons/yalu.png","version":"b7","desc":"Jailbreak devices running iOS 10-10.2.","signed":"http://destyy.com/q48Voy"},{"title":"Pangu","image":"/app-icons/pangu.png","version":"1.1","desc":"Jailbreak devices running iOS 9.2-9.3.3","signed":"http://clkmein.com/q2FsXu"},{"title":"Phoenix","image":"/app-icons/phoenix.png","version":"3","desc":"Jailbreak devices running iOS 9.3.5","signed":"http://destyy.com/q48MgH"},{"title":"AeroTV","image":"/app-icons/aero.png","version":"b15","desc":"Watch live tv for free with AeroTV.","dl":"http://festyy.com/q3A35q","signed":"http://clkmein.com/q2FsmD"},{"title":"LiveRevoke","image":"/app-icons/liverevoke.png","version":"1.0","desc":"See when your favorite third-party AppStores get revoked.","dl":"http://clkmein.com/q4rZRo"},{"title":"PPSSPP","image":"/app-icons/ppsspp.png","version":"1.4.2","desc":"A PSP emulator for your iPhone.","dl":"http://ceesty.com/q4vklh"},{"title":"Hotspot Shield++","image":"/app-icons/hotspot.png","version":"3.7.7","desc":"Upgrade your Hotspot Shield expierence with Hotspot Shield++. Obtain Hotspot Shield Elite for free!","dl":"http://festyy.com/q65Vdn"},{"title":"Saavn++","image":"/app-icons/saavn.png","version":"5.10","desc":"Listen to your favorite hindi songs for free.","dl":"http://ceesty.com/q4vl3z"}]
+module.exports = {"cercube 4":{"title":"Cercube 4","image":"youtube.png","version":"12.33","desc":"Upgrade your YouTube expierence with Cercube 4. Obtain features like no ads and more!","dl":"http://destyy.com/q12RgC","signed":"http://clkmein.com/q2Fotv"},"issb":{"title":"iSSB","image":"issb.png","version":"2.21","desc":"Play SSB on your device with iSSB.","dl":"http://ceesty.com/qNwuGc"},"hotspotshield++":{"title":"HotspotShield++","image":"hotspot.png","version":"3.7.6","desc":"Upgrade your HotspotShield expierence with HotspotShield++. Obtain HotspotShield Elite for free!","dl":"http://clkmein.com/qBVq81"},"goodnight":{"title":"GoodNight","image":"goodnight.png","version":"1.1.1","desc":"Soothe your eyes at night when looking at your device with GoodNight.","dl":"http://ceesty.com/qNwAqA","signed":"http://clkmein.com/q2FdaF"},"whatsapp watusi":{"title":"WhatsApp Watusi","image":"whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp Watusi.","dl":"http://destyy.com/q3YgAa","signed":"http://clkmein.com/q2FpeC"},"yalu102":{"title":"Yalu102","image":"yalu.png","version":"b7","desc":"Jailbreak devices running iOS 10-10.2.","signed":"http://destyy.com/q48Voy"},"provenance ios":{"title":"Provenance iOS","image":"provenance.png","version":"1.3.2","desc":"Provenance supports many different systems including Sega, Nintendo, and as well as Atari.","dl":"http://ceesty.com/q4vltL"},"whatsapp watusi + onlinenotify":{"title":"WhatsApp Watusi + OnlineNotify","image":"whatsapp.png","version":"2.17.52","desc":"This special version of Watusi supports notifications.","dl":"http://destyy.com/q3YjAi"},"betternet++":{"title":"Betternet++","image":"betternet.png","version":"3.3.21","desc":"Upgrade your Betternet expierence with Betternet++. Obtain Betternet Premium for free!","dl":"http://destyy.com/qN5D6g"},"retroarch":{"title":"RetroArch","image":"retroarch.png","version":"1.6","desc":"RetroArch is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsqQ"},"8 ball pool++":{"image":"8ball.png","dl":"8 Ball Pool++ v3.10.2.ipa","title":"8 Ball Pool++","version":"3.10.2","signed":"","desc":"Unlimited guide lines."},"everycord":{"title":"Everycord","image":"everycord.png","version":"1.1.5","desc":"Record your device screen with EveryCord.","dl":"http://gestyy.com/q2xcoF","signed":"http://clkmein.com/q2FdB5"},"kodi krypton":{"title":"Kodi Krypton","image":"kodi.png","version":"17.4","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Krypton.","dl":"http://destyy.com/q3Ylp7","signed":"http://festyy.com/q3AVGM"},"music pocket":{"title":"Music Pocket","image":"musicpocket.png","version":"1.0","desc":"Listen to any song you want to for free with Music Pocket.","dl":"http://clkmein.com/qBVvIY"},"mimo++":{"image":"mimo++.png","dl":"Mimo++ v2.1.9.ipa","title":"Mimo++","version":"2.1.9","signed":"","desc":"Learn how to code. All courses are unlocked!"},"liverevoke":{"title":"LiveRevoke","image":"liverevoke.png","version":"1.0","desc":"See when your favorite third-party AppStores get revoked.","dl":"http://clkmein.com/q4rZRo"},"slick tv":{"title":"Slick TV","image":"slicktv.png","version":"1.3","desc":"Watch live tv for free with Slick TV.","dl":"http://clkmein.com/qBVcTY"},"pokego++ 2.0":{"title":"PokeGo++ 2.0","image":"pogo.png","version":"r40","desc":"Upgrade your Pokemon Go expierence with PokeGo++ 2.0. Obtain features like teleporting and more!","dl":"http://gestyy.com/q2xsks","signed":"http://clkmein.com/q2FaNd"},"youtube++":{"title":"Youtube++","image":"youtube.png","version":"12.35","desc":"<strong>YouTube ++ - The YouTube tweak that makes YouTube easier and more convenient to use, allows video downloads and playback speed controls.</strong><br>\n<br>\n<strong>Interface Enhancements:</strong><br>\n• In-App Web Browser<br>\n• White Keyboard<br>\n• Hide upload button<br>\n• Choose Default Main Page<br>\n• Block promoted ads<br>\n• Block video ads<br>\n• Disable age restrictions<br>\n<br>\n<strong>Media Viewing Enhancements:</strong><br>\n• Background playback<br>\n• Forward/Rewind controls with custom number of seconds to go back/forward<br>\n• Speed controls to set video playback speed (0.5x - 2.0x)<br>\n• Default playback quality<br>\n• Auto-replay videos<br>\n• Beautiful downloads list<br>\n• Custom audio player for downloaded videos<br>\n• Play videos in background with control centre controls<br>\n<br>\n<strong>Media sharing and downloads:</strong><br>\n• Download videos<br>\n• The only TRUE 1080p and 60fps YouTube video downloader<br>\n• Choose default download quality<br>\n• Import videos to music library using JODebox<br>\n• Add videos to camera roll<br>\n<br>\n***Use at your own RISK!***","dl":"http://destyy.com/q3YfDa","signed":"http://clkmein.com/q2Fi5W"},"idarkmode":{"title":"iDarkMode","image":"idarkmode.png","version":"1.0","desc":"Enable dark mode on your device with iDarkMode.","dl":"http://ceesty.com/qNwDar"},"youtube music++":{"title":"Youtube Music++","image":"youtube.png","version":"1.92.2","desc":"Upgrade your YouTube Music expierence with YouTube Music++. Obtain features like no ads and more!","dl":"http://clkmein.com/q2IR3Y","signed":"http://clkmein.com/q2Fovj"},"xcleaner":{"title":"xCleaner","image":"xcleaner.png","version":"1.0.2","desc":"Clean up and free space on your device with xCleaner.","dl":"http://ceesty.com/qNwSLn","signed":"http://clkmein.com/q2FdFw"},"instagram rocket":{"title":"Instagram Rocket","image":"instagram.png","version":"14.0","desc":"Upgrade your Instagram expierence with Instagram Rocket.","dl":"http://destyy.com/q3Yfu8","signed":"http://clkmein.com/q2Fu5A"},"instagram++":{"title":"Instagram++","image":"instagram.png","version":"14.0","desc":"<h1>Instagram++</h1>\n<hr>\n<h2 style=\"font-size:small\"><em><strong>Instagram ++ - The Instagram tweak that makes Instagram easier and more convenient to use, allows photo/video downloads and sharing, and improves on the Instagram interface.</strong></em></h2>\n<br>\n<h2><em>Appearance Enhancements:</em></h2>\n<ul style=\"font-size:small\">\n<li>Custom main and explore feed types: choose between full feed and thumbnail view for each feed</li>\n<li>Show full timestamps for posts with customizable date/time formats</li>\n<li>Hide comments in full feed view</li>\n<li>Hide Bio info in profile view</li>\n<li>Spoof followers count</li>\n<li>Spoof following count</li>\n<li>Fullscreen view</li>\n</ul>\n<h2><em>Media Viewing Enhancements:</em></h2>\n<ul style=\"font-size:small\">\n<li>Open Links inside Instagram</li>\n<li>Show HQ photos in thumbnails</li>\n<li>Long hold an image to zoom</li>\n<li>Show caption while zoomed</li>\n</ul>\n<h2><em>Media sharing and downloads:</em></h2>\n<ul style=\"font-size:small\">\n<li>Share videos/photos using built in iOS share sheet</li>\n<li>Download videos/photos to your iOS camera roll</li>\n<li>Double tap on thumbnails to share/download</li>\n<li>Re-Gram videos and photos</li>\n<li>Download media</li>\n<li>Copy/Share Text</li>\n</ul>\n<h2><em>Misc Enhancements:</em></h2>\n<ul style=\"font-size:small\">\n<li>Always play video sound in full feed</li>\n<li>Confirm double tap to like</li>\n<li>Password protect the Instagram app</li>\n<li>Disable DM read receipts</li>\n<li>Manage multiple Instagram accounts.</li>\n</ul>\n<p style=\"font-size:small\">\nTo support our development of Instagram ++ as a free product, we've set it up to display ads near the bottom of your Instagram app. If you want to remove the ads you can tweet from the app for a 2 week removal or donate $2 for a lifetime license. Thanks for your support!<br>\n</p>\n<p style=\"font-size:small\">\n**Please note Instagram++ is not in anyway associated or affiliated with Instagram or Facebook Inc.**\n</p>","dl":"http://destyy.com/q3Yd4y","signed":"http://clkmein.com/q2FuL9"},"snapchat++":{"title":"Snapchat++","image":"snapchat.png","version":"10.17","desc":"<h1>Snapchat++</h1>\n<hr>\n<strong>Snap + for SnapChat - The SnapChat tweak that makes SnapChat easier and more convenient to use, lets you save media and improves on the SnapChat interface.</strong><br>\n<br>\nSnap + for SnapChat is a fully featured tweak that allows you to modify how you interact with SnapChat and how it handles common behaviors. <br>\n<br>\n<strong>Feature List:</strong><br>\n<br>\n</p>\n<h2> <em>Media Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Automatically or Manually Save Incoming and/or Outgoing Snaps</strong> - Set Snapchat up to automatically save all incoming or outgoing snaps so you can always review them later. </li>\n<li><strong>Save to Phone or Snapchat Vault</strong> - Save Snaps to your phone or the built in Snapchat + vault for ultimate security. </li>\n<li><strong>Disable Story AutoSwitch</strong> - Annoyed that stories automatically move from an image/video before you're done looking? Now you can control the flow. </li>\n<li><strong>Disable Snap Countdown</strong> - No longer have to worry about snaps disappearing before you have a good look!</li>\n<li><strong>Disable View Receipt </strong> - You get to decide when your snap partner gets a view receipt. You get to see the snap without notifying them! </li>\n<li> <strong>Spoof Snapchat Settings</strong> - Now you can spoof almost all Snapchat default settings, like Temperature, Speed and Story read request.</li>\n<li><strong>Save Chat Messages</strong> - Messages in the SnapChat no longer disappear. Just scroll up to see them all! </li>\n<li><strong>Share Chat Messages</strong> - Long click to copy/share chat text </li>\n<br>\n</ul>\n<h2><em>Face and Filters Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Custom Community Filters</strong> - Use filters created by the community. </li>\n<li><strong>Custom Local Filters</strong> - Upload your own filters to use. </li>\n<li> <strong>Now Playing Filter</strong> - Show others what you are listening to :). </li>\n<li> <strong>Default Faces</strong> - Enable the default faces</li>\n<br>\n</ul>\n<h2><em>App Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Advanced Image Editing</strong> - We've integrated additional image editing options for text and images so you can make the coolest snaps out there. </li>\n<li><strong>Geographic Spoofing</strong> - Now you can pick what city you're in to get access to all of the awesome filters SnapChat provides. </li>\n<li> <strong>Disable Screenshot Log</strong> - Want to take a screenshot of a snap but don’t want your friend to know? Now you can. </li>\n<li> <strong>Snapchat + Media Vault</strong> - Now you have the option to save images with a built in media vault</li>\n<li> <strong>Password and TouchID</strong> - Limit access to your SnapChat by turning on a Password or Using TouchID.</li>\n<li> <strong>Disable Shutter Sound</strong> - Want to take snaps discreetly? Now you can disable the shutter sound. </li>\n<li> <strong>Clear Badges on Exit </strong> - Even if you don’t watch all of your snaps, you can remove the annoying red notification badge when you exit SnapChat. </li>\n<li> <strong>Activator Integration </strong> - Now you can integrate SnapChat with activator so you can take Snaps with custom controls.</li>\n<br>\n</ul>\n<h2> <em>Usability Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li> <strong>Status Bar Notifications</strong> - Get a small ghost on the top iOS status bar whenever snapchat is in the background and you get a new Snap </li>\n<li><strong>Snap from Lock Screen</strong> - When enabled, you can open snapchat from the Lockscreen (bottom left), to open directly into Snapchat </li>\n<li> <strong>Enable/Disable Autoload of all media</strong> - You can disable the auto load of Snaps, Stories and/or Discovery feeds to save bandwidth. If enabled, the media won’t load until you click on it. </li>\n<li> <strong>Hide Discovery and Live Stories</strong> - No longer have to see the Discovery or Live Stories in your story feed. </li>\n<br>\n</ul>\n<p style=\"font-weight: bold;\">Please note that using 3rd party tweaks and apps is against Snapchat TOS and it could get your account locked / banned. This tweak does not implement any kind of DRM checks nor is it possible to know every method that Snapchat could use to detect its presence. Use at your own risk.</p>\n***Use at your own RISK!*** \n<br>\n***MUST DELETE ORIGINAL SNAPCHAT FOR THIS TO WORK***","dl":"http://clkmein.com/q2Im0U","signed":"http://clkmein.com/q2Fi0Y"},"ppsspp":{"title":"PPSSPP","image":"ppsspp.png","version":"1.4.2","desc":"A PSP emulator for your iPhone.","dl":"http://ceesty.com/q4vklh"},"gba4ios":{"title":"GBA4iOS","image":"gba.png","version":"2.1","desc":"Play GBA on your device with GBA4iOS.","dl":"http://ceesty.com/qNqBou","signed":"http://clkmein.com/q2FsMM"},"aerotv":{"title":"AeroTV","image":"aero.png","version":"b15","desc":"Watch live tv for free with AeroTV.","dl":"http://festyy.com/q3A35q","signed":"http://clkmein.com/q2FsmD"},"kodi leia":{"title":"Kodi Leia","image":"kodi.png","version":"18","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Leia.","dl":"http://ceesty.com/qNwSgn"},"surge":{"title":"Surge","image":"surge.png","version":"1.0.1","desc":"Watch live tv for free with Surge.","dl":"http://clkmein.com/qBVvrA"},"bobby movie":{"title":"Bobby Movie","image":"bmovie.png","version":"3.1.6","desc":"Watch movies that are in the theatre and TV shows for free with Bobby Movie.","dl":"http://gestyy.com/q2xfCI","signed":"http://destyy.com/q3YXrV"},"nba++":{"title":"NBA++","image":"nba.png","version":"7.053","desc":"Upgrade your NBA expierence with NBA++.","dl":"http://clkmein.com/qBVfyI","signed":"http://clkmein.com/q2FaDQ"},"whatsapp++":{"title":"WhatsApp++","image":"whatsapp.png","version":"2.17.52","desc":"Upgrade your WhatsApp expierence with WhatsApp++.","dl":"http://destyy.com/q3Ygh6","signed":"http://clkmein.com/q2FoN4"},"clash of phoenix":{"title":"Clash of Phoenix","image":"coc.png","version":"8.709.2","desc":"Upgrade your Clash of Clans expierence with Clash of Phoenix. Obtain features like unlimited resources, troops, gems, and more!","dl":"http://ceesty.com/qNwyJH"},"batterylife":{"title":"BatteryLife","image":"batterylife.png","version":"1.7","desc":"Moniter and improve your device's battery with Battery Life.","dl":"http://ceesty.com/qNwOBs"},"popcorn time":{"title":"Popcorn Time","image":"popcorntime.png","version":"3.1.2","desc":"Watch movies that are in the theatre and TV shows for free with Popcorm Time.","dl":"http://clkmein.com/qBVcwz","signed":"http://clkmein.com/q2Fsjs"},"pangu":{"title":"Pangu","image":"pangu.png","version":"1.1","desc":"Jailbreak devices running iOS 9.2-9.3.3","signed":"http://clkmein.com/q2FsXu"},"123 movies":{"title":"123 Movies","image":"123.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with 123 Movies.","dl":"http://clkmein.com/qBVbkp"},"itd app":{"title":"iTD App","image":"itdapp.png","version":"2.1","desc":"Use TweetDeck on your mobile device.","dl":"http://gestyy.com/q37lGy","signed":"http://gestyy.com/q37xP1"},"icleaner":{"title":"iCleaner","image":"icleaner.png","version":"2.0.1","desc":"Clean up and free space on your device with iCleaner.","dl":"http://destyy.com/qNXsGY","signed":"http://clkmein.com/q2Fdky"},"ifile":{"title":"iFile","image":"ifile.png","version":"2.2","desc":"Browse and download files on your device with iFile.","dl":"http://ceesty.com/qNwPkQ"},"nfl gamepass europe++":{"title":"NFL GamePass Europe++","image":"nflgp.png","version":"1.3","desc":"Upgrade your NFL GamePass expierence in Europe with NFL GamePass Europe++.","dl":"http://gestyy.com/q2xKTU"},"crunchyroll++":{"title":"Crunchyroll++","image":"crunchyroll.png","version":"3.0.8","desc":"Upgrade your Crunchyroll expierence with Crunchyroll++.","dl":"http://clkmein.com/qBV0A6","signed":"http://clkmein.com/q2Faou"},"f.lux":{"title":"f.lux","image":"flux.png","version":"1.0.9","desc":"Soothe your eyes at night when looking at your device with f.lux.","dl":"http://corneey.com/q1HOFo"},"kodi legacy":{"title":"Kodi Legacy","image":"kodi.png","version":"15.2.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Legacy.","dl":"http://destyy.com/qNXsWe","signed":"https://is.gd/3AEUJc"},"toonsnow":{"title":"ToonsNow","image":"toonsnow.png","version":"1.1.2","desc":"Watch movies that are in the theatre and TV shows for free with ToonsNow.","dl":"http://clkmein.com/qBVcCd","signed":"http://clkmein.com/q2FscH"},"fily":{"title":"Fily","image":"fily.png","version":"1.1","desc":"Browse and download files on your device with Fily.","dl":"http://ceesty.com/qNwPe5"},"snapchat scothman":{"title":"Snapchat SCOthman","image":"scothman.png","version":"10.17","desc":"Snapchat SCOthman includes features like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2InhR","signed":"http://clkmein.com/q2FiLw"},"phantom for snapchat":{"title":"Phantom for Snapchat","image":"snapchat.png","version":"10.17","desc":"Phantom for Snapchat has features like saving snaps, custom filters, and more! This version includes Phantom Lite v2.3.","dl":"http://clkmein.com/q2FhPd","signed":"http://clkmein.com/q2FiAJ"},"ufc++":{"title":"UFC++","image":"ufc.png","version":"3.2","desc":"Upgrade your UFV expierence with UFC++.","dl":"http://gestyy.com/q2xfsZ","signed":"http://clkmein.com/q2FaKs"},"pandora++":{"title":"Pandora++","image":"pandora.png","version":"1708.1","desc":"Upgrade your Pandora expierence with Pandora++. Obtain Pandora Premium for free!","dl":"http://destyy.com/q3Yhta","signed":"http://clkmein.com/q2FpNX"},"napster++":{"title":"Napster++","image":"napster.png","version":"5.11.1","desc":"Upgrade your Napster expierence with Napster++.","dl":"http://clkmein.com/q2IRTg","signed":"http://clkmein.com/q2FpAF"},"phoenix":{"title":"Phoenix","image":"phoenix.png","version":"3","desc":"Jailbreak devices running iOS 9.3.5","signed":"http://destyy.com/q48MgH"},"cienemabox pb":{"title":"CienemaBox PB","image":"cb.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with CinemaBox PB.","dl":"http://clkmein.com/qBV0Er"},"tinder++":{"title":"Tinder++","image":"tinder.png","version":"7.5.3","desc":"Upgrade your Tinder expierence with Tinder++. Obtain features like unlimited likes and more!","dl":"http://festyy.com/q3A3db"},"channels":{"title":"Channels","image":"channels.png","version":"1.3","desc":"Watch live tv for free with Channels.","dl":"http://clkmein.com/qBVx0U","signed":"http://clkmein.com/q2FsuY"},"moviehd":{"title":"MovieHD","image":"moviehd.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with MovieHD.","dl":"http://clkmein.com/qBVxbn"},"deezer++":{"title":"Deezer++","image":"deezer.png","version":"6.24.1","desc":"Upgrade your Deezer expierence with Deezer++. Obtain Deezer Premium+ for free!","dl":"http://gestyy.com/q2xunJ","signed":"http://clkmein.com/q2FpTA"},"downcloud pro":{"title":"DownCloud Pro","image":"downcloud.png","version":"2.0","desc":"Upgrade your SoundCloud expierence with DownCloud Pro. Download any song from SoundCloud for free!","dl":"http://gestyy.com/q2xzR4"},"audiotube":{"title":"AudioTube","image":"audiotube.png","version":"1.7","desc":"Listen to any song on YouTube you want to for free with AudioTube.","dl":"http://clkmein.com/qBVziG"},"live wire":{"title":"Live Wire","image":"livewire.png","version":"1.5","desc":"Watch live tv for free with Live Wire.","dl":"http://clkmein.com/qBVxSu","signed":"http://clkmein.com/q2FssH"},"snapchat phantom":{"title":"Snapchat Phantom","image":"snapchat.png","version":"10.17","desc":"Phantom for Snapchat has features like saving snaps, custom filters, and more! This version includes Phantom Lite v2.3.","dl":"http://clkmein.com/q2FhPd","signed":"http://clkmein.com/q2FiAJ"},"movie box++":{"title":"Movie Box++","image":"moviebox.png","version":"3.7.2","desc":"Upgrade your Movie Box expierence with Movie Box++. Remove ads from Movie Box!","dl":"http://gestyy.com/q2xgSt","signed":"http://clkmein.com/q2Fazp"},"handjoy":{"title":"HandJoy","image":"handjoy.png","version":"1.0","desc":"HandJoy is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsaA"},"twitter++":{"title":"Twitter++","image":"twitter.png","version":"7.7","desc":"<h1>Twitter++</h1>\n<hr>\n<strong>Twitter ++ - The Twitter tweak that makes Twitter easier and more convenient to use, integrates with other popular apps, and improves on the Twitter interface.</strong><br>\n<br>\nTwitter ++ is a fully featured tweak that allows you to modify how you interact with Twitter and how it handles common behaviors. <br>\n<br>\n<strong>Feature List:</strong>\n<br>\n<br>\n</p>\n<h2><em>Sharing Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Share Links</strong> - Share links from tweets by long pressing on them to bring up the iOS share screen </li>\n<li><strong>Share Images</strong> - Share images from tweets by long pressing on them to bring up the iOS share screen </li>\n<li><strong>Tweets Sharing</strong> - Allows you to directly share the tweet outside of Twitter (long press in timeline or 3 dots). </li>\n<li><strong>GIF and Vine Share/Save</strong> - Allows you to save locally or share GIFS and Vines effectively. Access by long clicking on the GIF when it is fully open (the display view) </li>\n<li><strong>Image/Video Share/Save</strong> - Allows you to save locally or share images and videos. Access by long clicking on the Image or Video either in the timeline or the display view (when it is fully open) </li>\n<li><strong>Direct Message Share</strong> - Allows you to share messages from a direct message through the iOS share sheet. </li>\n<br>\n</ul>\n<h2><em>App Integrations</em></h2>\n<ul style=\"font-size:small\">\n<li> <strong>Direct Download Youtube Videos</strong> - Download youtube videos from twitter to your phone.\n</li><li> <strong>Youtube Integration</strong> - Set Youtube links to open in Youtube app or with the Twitter built in player.</li>\n<li> <strong>Instagram Links</strong> - Set Instagram links to open in Instagram app or with the Twitter built in media service.</li>\n<li> <strong>Browser Integration</strong> - Set if you want links to be opened in Twitter default browser or other browser on your phone (Supported Browsers: Chrome, Opera, Dolphin, Atomic, iCab, Puffin).</li>\n<br>\n</ul>\n<h2> <em>Additional Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Image/Video Download</strong> - Download images and videos to your device to watch later. </li>\n<li><strong>Show Keyboard on Compose</strong> - Instead of being shown the media screen, have the keyboard show up on compose. </li>\n<li><strong>Automatic Long Tweet Creation</strong> - For tweets that are over 140 Chars, Twitter ++ allows you to automatically post tweet as an image or using pastebin. </li>\n<li><strong>Easier List Access</strong> - Finally start using lists to organize Twitter! List button added to the main feed back for easy access. </li>\n<li><strong>Confirm Favorite</strong> - Bring up confirmation screen when favoriting a tweet. </li>\n<li><strong>Hide Follow in Tweet</strong> - Remove the follow button on tweets. </li>\n<li><strong>Remove Status Bar</strong> - Enable full screen view for twitter by hiding the top status bar. </li>\n<li><strong>Timeline Badges</strong> - In the timeline, show verified badges for users. </li>\n<li><strong>View Blocked Profiles</strong> - Continue seeing tweets and profiles of users how have blocked you. </li>","dl":"http://clkmein.com/q2Imh4","signed":"http://clkmein.com/q2FiNp"},"nfl gamepass++":{"title":"NFL GamePass++","image":"nflgp.png","version":"3.9","desc":"Upgrade your NFL GamePass expierence with NFL GamePass++.","dl":"http://destyy.com/q12kmb"},"inds":{"title":"iNDS","image":"inds.png","version":"1.5.4","desc":"Play NDS on your device with iNDS.","dl":"http://ceesty.com/qNq6YV"},"cartoon hd":{"title":"Cartoon HD","image":"cartoon.png","version":"2.0","desc":"Watch movies that are in the theatre and TV shows for free with Cartoon HD.","dl":"http://clkmein.com/qBV0ci","signed":"http://clkmein.com/q2Fsep"},"kodi jarvis":{"title":"Kodi Jarvis","image":"kodi.png","version":"16.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Jarvis.","dl":"http://ceesty.com/qNwASi","signed":"http://clkmein.com/q2Fdbr"},"soundcloud++":{"title":"SoundCloud++","image":"soundcloud.png","version":"5.12","desc":"Upgrade your SoundCloud expierence with SoundCloud++. Obtain Soundcloud Go+ for free!","dl":"http://clkmein.com/qBVqkj","signed":"http://clkmein.com/q2Fpm5"},"flickjoy":{"title":"FlickJoy","image":"flickjoy.png","version":"1.5","desc":"Watch movies that are in the theatre and TV shows for free with FlickJoy.","dl":"http://clkmein.com/qBVxMI"},"saavn++":{"title":"Saavn++","image":"saavn.png","version":"5.10","desc":"Listen to your favorite hindi songs for free.","dl":"http://ceesty.com/q4vl3z"},"twitch++":{"title":"Twitch++","image":"twitch.png","version":"5.1.1","desc":"<h1>Twitch++</h1>\n<hr>\n<h2 style=\"font-size:small\"><em><strong>Twitch ++ - The Twitch tweak that makes Twitch easier and more convenient to use, blocks annoying ads and makes the Twtich interface easier to use.</strong></em></h2>\n<br>\n<strong>Feature List:</strong>\n<br>\n</p>\n<h2> <em>Usage Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Ad Block</strong> Block all video ads. </li>\n<li><strong>Landscape Chat</strong> View the chat window while in landscape mode. </li>\n<li><strong>Play/Pause live streams</strong> You can now pause live streams. </li>\n<li><strong>Multiple Video Streams</strong> You can now watch multiple Twitch streams at once. </li>\n<br>\n</ul>","dl":"http://corneey.com/q1RRiF","signed":"http://clkmein.com/q2FpfN"},"happy chick":{"title":"Happy Chick","image":"happychick.png","version":"1.5.4","desc":"Happy Chick is an advanced multi-emulator app for iOS.","dl":"http://ceesty.com/qNqBU2","signed":"http://clkmein.com/q2Fs60"},"facebook++":{"title":"Facebook++","image":"facebook.png","version":"139","desc":"<h1>Facebook++</h1>\n<hr>\n<h2 style=\"font-size:small\"><em><strong>Facebook ++ - The Facebook tweak that allows you to turn off read receipts, use the in-app messenger, save/download videos and much more!</strong></em></h2>\n<br>\n<h2> <em>Media Settings</em></h2>\n<ul style=\"font-size:small\">\n<li> Copy videos to Clipboard (to paste/send later) or Save/Download to albums</li>\n<li> Moved <strong>all settings</strong> into Facebook app, not the system settings.</li>\n<br>\n</ul>\n<h2> <em>Privacy Settings</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Stealth Mode</strong> - Let's you fly under the radar, disabling read receipts, typing indicators, online status and location sharing. The ultimate in stealth operation.</li>\n<li><strong>Disable Read Receipts</strong> - Does not notify the sender of a message that you've viewed the message</li>\n<li><strong>Disable Typing Receipts</strong> - Does not notify the person you're chatting with when/if you're typing.</li>\n<br>\n</ul>\n<h2> <em>Security Settings</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Set Passcode</strong> - Enables a 4 digit code to access Facebook on startup. Also allows you to enable Touch ID to secure the Facebook. </li>\n<br>\n</ul>\n<h2> <em>In App Messenger Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Use In App Messenger</strong> - Facebook no longer forces you to use/download their separate messenger app to chat. Allows you to get chat heads back. </li>\n<li><strong>Use Timestamp for Every Message</strong> - By default, Facebook just shows time stamp for the most recent message, this will keep timestamps visible for all messages. </li>\n<li><strong>Send Unlimited Photos</strong> - Facebook allows you to send up to 6 photos and pictures via messages. This removes that limit. </li>\n<li><strong>Disable VoIP</strong> - Facebook added VoIP to Messenger. It can use up a lot of battery life. This disables VoIP to save your battery. </li>\n<br>\n</ul>\n<h2> <em>Facebook Enhancements</em></h2>\n<ul style=\"font-size:small\">\n<li><strong>Hide Facebook App Tab Labels</strong> - Hides the top search and 'Status', 'Photo' and 'Check In' tabs. Gets overridden buy 'Full Screen Mode' </li>\n<li><strong>Disable Video Auto Play</strong> - By default, Facebook will play videos. This option allows you to turn off the autoplay saving you data and bandwidth. </li>\n<li><strong>Full Screen Mode</strong> - Hides everything while scrolling through the feed. Overrides the 'Hide Facebook App Tab Labels' </li>\n<li><strong>Graph Search</strong> - Enables the experimental but powerful Graph Search. </li>\n<li><strong>Show Video Download Button</strong> - You're now able to copy or save videos from your news feed. This shows the button on the bottom right of each video. </li>\n<li><strong>Employee Settings</strong> - This enables a TON of additional very technical options. When enabled, it shows the 'Internal Settings' options at the very bottom of the Facebook settings tab. </li>\n<li><strong>Sidebar Navigator</strong> - Re-enables the classic sidebar options navigator that Facebook took out. </li>\n<li><strong>Top Bar Options</strong> - Adds 'Friends Requests', 'Chat' and 'Notifications' to the top bar </li>","dl":"http://clkmein.com/q2IERa","signed":"http://clkmein.com/q2FoTq"},"mame4ios":{"title":"Mame4ios","image":"mame.png","version":"1.6","desc":"Play arcade games on your device with Mame4ios.","dl":"http://ceesty.com/qNq6M2"},"bobby music":{"title":"Bobby Music","image":"bmusic.png","version":"2.0.3","desc":"Listen to any song you want to for free with Bobby Music.","dl":"http://clkmein.com/qBV0eq"},"spotify++":{"title":"Spotify++","image":"spotify.png","version":"8.4.18","desc":"Upgrade your Spotify expierence with Spotify++. Obtain Spotify Premium for free!","dl":"http://destyy.com/q3YgL3","signed":"http://clkmein.com/q2FpxX"},"whatspad++":{"title":"WhatsPad++","image":"whatsapp.png","version":"2.17.51","desc":"Upgrade your WhatsApp expierence with WhatsPad++.","dl":"http://destyy.com/q3YgWK","signed":"http://clkmein.com/q2FoN4"}}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(13);
+__webpack_require__(66);
+__webpack_require__(67);
+module.exports = __webpack_require__(68);
+
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(14);
-__webpack_require__(66);
-module.exports = __webpack_require__(67);
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {//require('popper')
+//require('popper')
 //require('bootstrap')
-window.Vue = __webpack_require__(15);
-window._ = __webpack_require__(16);
-window.axios = __webpack_require__(18);
+window.Vue = __webpack_require__(14);
+window._ = __webpack_require__(15);
+window.axios = __webpack_require__(17);
 var $env = __webpack_require__(37);
 
 $(document).ready(function () {
@@ -1409,19 +1220,34 @@ Vue.component('contact', __webpack_require__(49));
 Vue.component('popup', __webpack_require__(54));
 Vue.component('contactitem', __webpack_require__(59));
 
-Vue.config.devtools = process.NODE_ENV === 'development';
-Vue.config.debug = process.NODE_ENV === 'development';
-Vue.config.silent = !(process.NODE_ENV === 'development');
+// Vue.config.devtools = (process.NODE_ENV === 'development')
+// Vue.config.debug = (process.NODE_ENV === 'development')
+// Vue.config.silent = !(process.NODE_ENV === 'development')
 
 var app = new Vue({
   el: '#app',
   data: {
     adverts: __webpack_require__(65),
-    apps: __webpack_require__(12),
-    searchResults: __webpack_require__(12),
+    apps: [],
+    searchResults: [],
     contact: {},
-    store: ""
+    store: "",
+    loading: true
   },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('https://dashboard.ioshaven.co').then(function (res) {
+      _this.apps = res.data;
+      _this.searchResults = res.data;
+      _this.loading = false;
+    }).catch(function (err) {
+      _this.apps = __webpack_require__(11);
+      _this.searchResults = __webpack_require__(11);
+      _this.loading = false;
+    });
+  },
+
   methods: {
     $advert: function $advert() {
       var keys = Object.keys(this.adverts);
@@ -1430,7 +1256,7 @@ var app = new Vue({
     },
 
     child: function child(value) {
-      var _this = this;
+      var _this2 = this;
 
       this.searchResults = _.sortBy(this.apps, [function (o) {
         return o.title.toLowerCase();
@@ -1439,7 +1265,7 @@ var app = new Vue({
 
 
       this.searchResults = _.filter(this.searchResults, function (o) {
-        return _.startsWith(o.title.toLowerCase(), _this.store.toLowerCase());
+        return _.startsWith(o.title.toLowerCase(), _this2.store.toLowerCase());
       });
 
       if (value.unsigned) {
@@ -1458,8 +1284,8 @@ var app = new Vue({
       var amount = 7;
 
       var getAd = function getAd() {
-        var obj = _this.adverts[_this.$advert()];
-        obj.advert = _this.$advert();
+        var obj = _this2.adverts[_this2.$advert()];
+        obj.advert = _this2.$advert();
         return obj;
       };
 
@@ -1473,10 +1299,9 @@ var app = new Vue({
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11568,10 +11393,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -28660,10 +28485,10 @@ module.exports = Vue$3;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(17)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(16)(module)))
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -28691,21 +28516,21 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(19);
+module.exports = __webpack_require__(18);
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(7);
-var Axios = __webpack_require__(21);
+var bind = __webpack_require__(6);
+var Axios = __webpack_require__(20);
 var defaults = __webpack_require__(4);
 
 /**
@@ -28739,9 +28564,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(11);
+axios.Cancel = __webpack_require__(10);
 axios.CancelToken = __webpack_require__(35);
-axios.isCancel = __webpack_require__(10);
+axios.isCancel = __webpack_require__(9);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -28756,7 +28581,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports) {
 
 /*!
@@ -28783,7 +28608,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28876,6 +28701,196 @@ module.exports = Axios;
 
 
 /***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28901,7 +28916,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(9);
+var createError = __webpack_require__(8);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -29320,7 +29335,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(32);
-var isCancel = __webpack_require__(10);
+var isCancel = __webpack_require__(9);
 var defaults = __webpack_require__(4);
 
 /**
@@ -29473,7 +29488,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(11);
+var Cancel = __webpack_require__(10);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -29762,11 +29777,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     $advert: function $advert() {
       return this.$parent.adverts[this.advert];
+    },
+    link: function link(type) {
+      if (this[type] && this[type].slice(0, 4) == 'http') return this[type];
+      if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type];
+      if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type];
     }
   },
-  mounted: function mounted() {
-    console.log('this advert is: ' + this.advert);
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -29807,7 +29825,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('img', {
     staticClass: "center-block",
     attrs: {
-      "src": _vm.image
+      "src": "https://dashboard.ioshaven.co/image/" + _vm.image
     }
   }), _vm._v(" "), _c('br'), _vm._v(" "), _c('p', {
     staticClass: "center color-black"
@@ -29817,19 +29835,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "image": _vm.image,
       "title": _vm.title,
       "description": _vm.desc,
-      "dl": _vm.dl,
-      "signed": _vm.signed,
+      "dl": _vm.link('dl'),
+      "signed": _vm.link('signed'),
       "version": _vm.version
     }
   }), _vm._v(" "), (_vm.signed) ? _c('a', {
     staticClass: "btn btn-success center-dl center-s-dl",
     attrs: {
-      "href": _vm.signed
+      "href": _vm.link('signed')
     }
   }, [_vm._v("Install Signed")]) : _vm._e(), _vm._v(" "), (_vm.dl) ? _c('a', {
     staticClass: "btn btn-primary center-dl",
     attrs: {
-      "href": _vm.dl
+      "href": _vm.link('dl')
     }
   }, [_vm._v("Download .ipa")]) : _vm._e()], 1)])
 },staticRenderFns: []}
@@ -30569,12 +30587,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fas fa-times"
   })])]), _vm._v(" "), _c('div', {
     staticClass: "win-content win-body"
-  }, [_c('span', [_c('div', {
-    staticClass: "appIMG",
-    style: ({
-      'background-image': 'url(' + _vm.image + ')'
-    })
-  }), _vm._v("\n        " + _vm._s(_vm.description) + "\n      ")])]), _vm._v(" "), _c('div', {
+  }, [_c('span', {
+    staticClass: "markdown-body",
+    domProps: {
+      "innerHTML": _vm._s(_vm.description)
+    }
+  })]), _vm._v(" "), _c('div', {
     staticClass: "win-content win-footer"
   }, [(!_vm.advert) ? _c('span', [_vm._v("Version: " + _vm._s(_vm.version))]) : _vm._e(), _vm._v(" "), (_vm.advert) ? _c('span') : _vm._e(), _vm._v(" "), _c('div', {}, [(_vm.advert) ? _c('a', {
     staticClass: "btn btn-primary",
@@ -30913,6 +30931,12 @@ module.exports = {"digitalocean":{"advert":"true","image":"app-icons/DigitalOcea
 
 /***/ }),
 /* 67 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 68 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

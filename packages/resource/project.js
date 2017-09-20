@@ -32,18 +32,32 @@ Vue.component('contact', require('./components/contact.vue'))
 Vue.component('popup', require('./components/popup.vue'))
 Vue.component('contactitem', require('./components/contactItem.vue'))
 
-Vue.config.devtools = (process.NODE_ENV === 'development')
-Vue.config.debug = (process.NODE_ENV === 'development')
-Vue.config.silent = !(process.NODE_ENV === 'development')
+// Vue.config.devtools = (process.NODE_ENV === 'development')
+// Vue.config.debug = (process.NODE_ENV === 'development')
+// Vue.config.silent = !(process.NODE_ENV === 'development')
 
 const app = new Vue({
   el: '#app',
   data: {
     adverts: require('./adverts.json'),
-    apps: require('./sideload-apps.json'),
-    searchResults: require('./sideload-apps.json'),
+    apps: [],
+    searchResults: [],
     contact: {},
-    store: ""
+    store: "",
+    loading: true
+  },
+  mounted() {
+    axios.get('https://dashboard.ioshaven.co')
+    .then(res => {
+      this.apps = res.data
+      this.searchResults = res.data
+      this.loading = false
+    })
+    .catch(err => {
+      this.apps = require('./sideload-apps.json')
+      this.searchResults = require('./sideload-apps.json')
+      this.loading = false
+    })
   },
   methods: {
     $advert(){

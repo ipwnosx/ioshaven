@@ -14,9 +14,9 @@
         <span @click="show = false" class="close">close <i class="fas fa-times"></i></span>
       </div>
       <div class="win-content win-body">
-        <span>
-          <div class="appIMG" :style="{'background-image': 'url('+ image +')'}"></div>
-          {{description}}
+        <span v-html="description" class="markdown-body">
+          <!-- <div class="appIMG" :style="{'background-image': 'url('+ image +')'}"></div> -->
+          <!-- <span  ></span> -->
         </span>
       </div>
       <div class="win-content win-footer">

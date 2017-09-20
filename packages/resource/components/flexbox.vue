@@ -17,7 +17,7 @@
 
   <div class="inside" v-else="">
     <h4 class="center color-black">{{title}}</h4>
-    <img :src='image' class="center-block" />
+    <img :src='"https://dashboard.ioshaven.co/image/"+image' class="center-block" />
     <br>
     <p class="center color-black">{{version}}</p>
     <popup
@@ -25,12 +25,12 @@
       :image="image"
       :title="title"
       :description="desc"
-      :dl="dl"
-      :signed="signed"
+      :dl="link('dl')"
+      :signed="link('signed')"
       :version="version"
     ></popup>
-    <a v-if="signed" :href="signed" class="btn btn-success center-dl center-s-dl">Install Signed</a>
-    <a v-if="dl" :href="dl" class="btn btn-primary center-dl">Download .ipa</a>
+    <a v-if="signed" :href="link('signed')" class="btn btn-success center-dl center-s-dl">Install Signed</a>
+    <a v-if="dl" :href="link('dl')" class="btn btn-primary center-dl">Download .ipa</a>
   </div>
 </div>
 </template>
@@ -68,10 +68,14 @@ export default {
   methods: {
     $advert(){
       return this.$parent.adverts[this.advert]
+    },
+    link(type) {
+      if (this[type] && this[type].slice(0,4) == 'http') return this[type]
+      if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type]
+      if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type]
     }
   },
   mounted() {
-    console.log('this advert is: '+this.advert);
   }
 }
 </script>

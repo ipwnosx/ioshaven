@@ -45,3 +45,7 @@ a:hover a img {
   letter-spacing: 0.1rem;
 }
 
+span.markdown-body * {
+  color: #24292e;
+}
+
