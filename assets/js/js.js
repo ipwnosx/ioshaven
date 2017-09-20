@@ -41818,7 +41818,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.apps {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n}\n.menu {\n  position: fixed;\n  bottom: 0;\n  width: 100%;\n  left: 0;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-family: sans-serif;\n  text-transform: capitalize;\n}\n.opt {\n  background: #2196F3;\n  padding: 1rem 1.1rem;\n  border-radius: 3rem;\n  font-size: 1rem;\n  color: white;\n  margin: 1rem 0.5rem;\n  margin-top: 0;\n}\n.opt span {\n  margin-left: 0.5rem;\n}\n.opt:hover {\n  cursor: pointer;\n  background: #43a6f5;\n}\n.danger {\n  background: #e02727;\n}\n.danger:hover {\n  background: #e44646;\n}\n", ""]);
+exports.push([module.i, "\n.apps {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n}\n.menu {\n  position: fixed;\n  bottom: 0;\n  width: 100%;\n  left: 0;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-family: sans-serif;\n  text-transform: capitalize;\n}\n.opt {\n  background: #2196F3;\n  padding: 1rem 1.1rem;\n  border-radius: 3rem;\n  font-size: 1rem;\n  color: white;\n  margin: 1rem 0.5rem;\n  margin-top: 0;\n}\n.opt .label {\n  margin-left: 0.5rem;\n}\n.opt:hover {\n  cursor: pointer;\n  background: #43a6f5;\n}\n.danger {\n  background: #e02727;\n}\n.danger:hover {\n  background: #e44646;\n}\n", ""]);
 
 // exports
 
@@ -41861,7 +41861,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       count: 0,
       forms: [],
       goingLive: false,
-      savingAll: false
+      savingAll: false,
+      delay: 1000
     };
   },
 
@@ -41873,14 +41874,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       this.savingAll = true;
-      var p = [];
-      _.forEach(this.forms, function (f) {
-        p.push(f.save());
-      });
-      return Promise.all(p).then(function () {
-        console.log('all done!!');
-        _this.savingAll = false;
-      });
+      setTimeout(function () {
+        var p = [];
+        _.forEach(_this.forms, function (f) {
+          p.push(f.save());
+        });
+        return Promise.all(p).then(function () {
+          _this.savingAll = false;
+        });
+      }, this.delay);
     },
     goLive: function goLive() {
       var _this2 = this;
@@ -41888,10 +41890,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.goingLive = true;
       setTimeout(function () {
         axios.post("/golive").then(function (result) {
-          console.log(result.data);
           _this2.goingLive = false;
         });
-      }, 1000);
+      }, this.delay);
     }
   }
 });
@@ -41928,20 +41929,52 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.saveAll
     }
-  }, [(_vm.savingAll) ? _c('i', {
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.savingAll),
+      expression: "savingAll"
+    }]
+  }, [_c('i', {
     staticClass: "fa fa-spinner fa-spin fa-fw"
-  }) : _c('i', {
+  })]), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.savingAll),
+      expression: "!savingAll"
+    }]
+  }, [_c('i', {
     staticClass: "fa fa-save"
-  }), _vm._v(" "), _c('span', [_vm._v("Save All")])]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "label"
+  }, [_vm._v("Save All")])]), _vm._v(" "), _c('div', {
     staticClass: "opt danger",
     on: {
       "click": _vm.goLive
     }
-  }, [(_vm.goingLive) ? _c('i', {
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.goingLive),
+      expression: "goingLive"
+    }]
+  }, [_c('i', {
     staticClass: "fa fa-spinner fa-spin fa-fw"
-  }) : _vm._e(), _vm._v(" "), (!_vm.goingLive) ? _c('i', {
+  })]), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.goingLive),
+      expression: "!goingLive"
+    }]
+  }, [_c('i', {
     staticClass: "fa fa-cloud-upload"
-  }) : _vm._e(), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.goingLive))])])])], 2)
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "label"
+  }, [_vm._v("Go Live")])])])], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

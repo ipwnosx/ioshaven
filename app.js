@@ -121,8 +121,18 @@ function getJSON(req, res) {
 
 }
 function goLive(req, res) {
-exec('./fileTransfer.sh',(error, stdout, stderr)=>{
-  if (error) return console.log(error);
-  res.end(stdout)
-})
+  redis.hgetall('apps')
+  .then(r=>{
+    for (key in r){
+      r[key] = JSON.parse(r[key])
+    }
+    fs.writeFile("sideload-apps.json", JSON.stringify(r), (err) => {
+      if (err) return console.log(err);
+      exec('./fileTransfer.sh',(error, stdout, stderr)=>{
+        if (error) return console.log(error);
+        res.end(stdout)
+      })
+    })
+  })
+
 }

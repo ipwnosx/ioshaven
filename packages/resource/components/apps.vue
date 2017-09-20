@@ -9,15 +9,15 @@
       </div>
 
       <div class="opt"  @click="saveAll">
-        <i class="fa fa-spinner fa-spin fa-fw" v-if="savingAll"></i>
-        <i class="fa fa-save" v-else=""></i>
-        <span>Save All</span>
+        <span  v-show="savingAll"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+        <span  v-show="!savingAll"><i class="fa fa-save"></i></span>
+        <span class="label">Save All</span>
       </div>
 
       <div class="opt danger" @click="goLive">
-        <i class="fa fa-spinner fa-spin fa-fw" v-if="goingLive"></i>
-        <i class="fa fa-cloud-upload" v-if="!goingLive"></i>
-        <span>{{goingLive}}</span>
+        <span  v-show="goingLive"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
+        <span  v-show="!goingLive"><i class="fa fa-cloud-upload"></i></span>
+        <span class="label">Go Live</span>
       </div>
     </div>
   </div>
@@ -30,7 +30,8 @@ export default {
       count: 0,
       forms: [],
       goingLive: false,
-      savingAll: false
+      savingAll: false,
+      delay: 1000
     }
   },
   methods: {
@@ -39,24 +40,25 @@ export default {
     },
     saveAll() {
       this.savingAll = true
-      let p = []
-      _.forEach(this.forms, f => {
-        p.push(f.save())
-      })
-      return Promise.all(p).then(()=>{
-        console.log('all done!!');
-        this.savingAll = false
-      })
+      setTimeout(()=>{
+        let p = []
+        _.forEach(this.forms, f => {
+          p.push(f.save())
+        })
+        return Promise.all(p).then(()=>{
+          this.savingAll = false
+        })
+      },this.delay)
+
     },
     goLive() {
       this.goingLive = true
       setTimeout(()=>{
         axios.post("/golive")
         .then(result=>{
-          console.log(result.data);
           this.goingLive = false
         })
-      },1000)
+      },this.delay)
 
 
 
@@ -91,7 +93,7 @@ export default {
     margin: 1rem 0.5rem;
     margin-top: 0;
 }
-.opt span {
+.opt .label {
   margin-left: 0.5rem;
 }
 .opt:hover {
