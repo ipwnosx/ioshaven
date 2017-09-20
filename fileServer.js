@@ -6,6 +6,10 @@ const path = require('path')
 app.use('/image', express.static(path.join(__dirname, 'uploads/images')))
 app.use('/ipa', express.static(path.join(__dirname, 'uploads/ipas')))
 
+app.get('/', function (req, res) {
+  res.send('hello world')
+})
+
 server.listen(3000,()=>{
   console.log('server is running');
 })
