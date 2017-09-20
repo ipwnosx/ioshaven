@@ -49,3 +49,13 @@ span.markdown-body * {
   color: #24292e;
 }
 
+span.loading {
+  margin: auto;
+  font-size: 3rem;
+  color: black;
+  text-transform: uppercase;
+  line-height: 4rem;
+  text-align: center;
+  padding: 2rem;
+}
+

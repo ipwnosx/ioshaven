@@ -12,8 +12,14 @@
       <p>Install and sideload apps with ease.</p>
     </header>
     <div class="container">
+      <div class="row" v-if="loading">
+        <span class="loading">
+            loading...
+        </span>
+      </div>
+
       <div class="row ">
-        <search v-on:result="child"></search>
+        <search v-on:result="child" v-if="!loading"></search>
       </div>
       <div class="row">
           <flexbox

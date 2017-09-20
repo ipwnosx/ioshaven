@@ -51,6 +51,7 @@ const app = new Vue({
     .then(res => {
       this.apps = res.data
       this.searchResults = res.data
+      // this.child()
       this.loading = false
     })
     .catch(err => {

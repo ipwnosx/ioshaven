@@ -1240,6 +1240,7 @@ var app = new Vue({
     axios.get('https://dashboard.ioshaven.co').then(function (res) {
       _this.apps = res.data;
       _this.searchResults = res.data;
+      // this.child()
       _this.loading = false;
     }).catch(function (err) {
       _this.apps = __webpack_require__(11);
