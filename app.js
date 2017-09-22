@@ -16,7 +16,7 @@ nunjucks.configure('views', {
 })
 
 app.use(express.static('assets'))
-app.use(express.static('favicomatic'))
+app.use(express.static('favicons'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 

@@ -8,72 +8,27 @@
   <link href="/css/markdown.css" rel="stylesheet">
 
 
-  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="60x60" href="apple-touch-icon-60x60.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png" />
-  <link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196" />
-  <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
-  <link rel="icon" type="image/png" href="favicon-128.png" sizes="128x128" />
-  <meta name="application-name" content="&nbsp;" />
-  <meta name="msapplication-TileColor" content="#FFFFFF" />
-  <meta name="msapplication-TileImage" content="mstile-144x144.png" />
-  <meta name="msapplication-square70x70logo" content="mstile-70x70.png" />
-  <meta name="msapplication-square150x150logo" content="mstile-150x150.png" />
-  <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
-  <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=lkdjpdr5vE">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=lkdjpdr5vE">
+<link rel="icon" type="image/png" sizes="194x194" href="/favicon-194x194.png?v=lkdjpdr5vE">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png?v=lkdjpdr5vE">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=lkdjpdr5vE">
+<link rel="manifest" href="/manifest.json?v=lkdjpdr5vE">
+<link rel="mask-icon" href="/safari-pinned-tab.svg?v=lkdjpdr5vE" color="#5bbad5">
+<link rel="shortcut icon" href="/favicon.ico?v=lkdjpdr5vE">
+<meta name="apple-mobile-web-app-title" content="IOS Haven">
+<meta name="application-name" content="IOS Haven">
+<meta name="theme-color" content="#ffffff">
 
 
-  <script type="text/javascript">
-    window.heap = window.heap || [], heap.load = function(e, t) {
-      window.heap.appid = e, window.heap.config = t = t || {};
-      var r = t.forceSSL || "https:" === document.location.protocol,
-        a = document.createElement("script");
-      a.type = "text/javascript", a.async = !0, a.src = (r ? "https:" : "http:") + "//cdn.heapanalytics.com/js/heap-" + e + ".js";
-      var n = document.getElementsByTagName("script")[0];
-      n.parentNode.insertBefore(a, n);
-      for (var o = function(e) {
-          return function() {
-            heap.push([e].concat(Array.prototype.slice.call(arguments, 0)))
-          }
-        }, p = ["addEventProperties", "addUserProperties", "clearEventProperties", "identify", "removeEventProperty", "setEventProperties", "track", "unsetEventProperty"], c = 0; c < p.length; c++) heap[p[c]] = o(p[c])
-    };
-    heap.load("2863416991");
-  </script>
-
-  <script type="text/javascript">//<![CDATA[
-  (function() {
-      var configuration = {
-      "token": "f39b387337e4965aaea55fb806a6ceb4",
-      "exitScript": {
-          "enabled": true
-      },
-      "popUnder": {
-          "enabled": true
-      }
-  };
-      var script = document.createElement('script');
-      script.async = true;
-      script.src = '//cdn.shorte.st/link-converter.min.js';
-      script.onload = script.onreadystatechange = function () {var rs = this.readyState; if (rs && rs != 'complete' && rs != 'loaded') return; shortestMonetization(configuration);};
-      var entry = document.getElementsByTagName('script')[0];
-      entry.parentNode.insertBefore(script, entry);
-  })();
-  //]]></script>
 
 
-  <!-- P A Y P A L   D O N A T E   B U T T O N -->
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" id="paypalDonate">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="hosted_button_id" value="E8QZHGDDUQAGY">
-    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-  </form>
+
+  {% include 'scripts/Google-Analytics.html' %}
+  {% include 'scripts/Heap.html' %}
+  {% include 'scripts/PayPal.html' %}
+  {% include 'scripts/Shortest.html' %}
+
 
 </head>
