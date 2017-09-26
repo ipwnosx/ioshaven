@@ -17,7 +17,7 @@ Vue.component('apps', require('./components/apps.vue'))
 // Vue.config.devtools = (process.NODE_ENV === 'development')
 // Vue.config.debug = (process.NODE_ENV === 'development')
 // Vue.config.silent = !(process.NODE_ENV === 'development')
-
+//
 window.app = new Vue({
   el: '#app',
 
