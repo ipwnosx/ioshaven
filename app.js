@@ -25,6 +25,8 @@ app.use(express.static('favicomatic'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(fileUpload())
+app.use('/image', express.static(path.join(__dirname, 'uploads/images')))
+app.use('/ipa', express.static(path.join(__dirname, 'uploads/ipas')))
 
 server.listen(8000,()=>{
   console.log('server is running');
@@ -38,6 +40,8 @@ app.get('/files', getFiles)
 app.post('/app/save', appSave)
 app.post('/json', getJSON)
 app.post('/golive', goLive)
+app.get('/liveApps', liveApps)
+
 
 function readdir(path) {
   return new Promise(function(resolve, reject) {
@@ -126,17 +130,20 @@ function getJSON(req, res) {
 }
 function goLive(req, res) {
   redis.hgetall('apps')
+  .then(apps=>{
+    return redis.hmset('liveApps', apps)
+  })
+  .then(liveApps=>{
+    return res.end('yes')
+  })
+}
+
+function liveApps(req, res) {
+  redis.hgetall('liveApps')
   .then(r=>{
     for (key in r){
       r[key] = JSON.parse(r[key])
     }
-    fs.writeFile("sideload-apps.json", JSON.stringify(r), (err) => {
-      if (err) return console.log(err);
-      exec('./fileTransfer.sh',(error, stdout, stderr)=>{
-        if (error) return console.log(error);
-        res.end(stdout)
-      })
-    })
+    res.json(r)
   })
-
 }
