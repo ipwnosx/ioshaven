@@ -40154,6 +40154,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var $mark = __webpack_require__(47);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -40166,6 +40167,7 @@ var $mark = __webpack_require__(47);
         title: '',
         version: '',
         signed: '',
+        games: '',
         desc: ''
       },
       saved: {},
@@ -41675,6 +41677,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.raw.signed = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.raw.games),
+      expression: "raw.games"
+    }],
+    attrs: {
+      "type": "text",
+      "placeholder": "Games IPA"
+    },
+    domProps: {
+      "value": (_vm.raw.games)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.raw.games = $event.target.value
       }
     }
   }), _vm._v(" "), _c('div', {

@@ -35,6 +35,7 @@
       <input v-model="raw.version" type="text" placeholder="Version" >
       <search v-model="raw.dl" files="ipas" attr="" temp="Unsigned IPA"></search>
       <input v-model="raw.signed" type="text" placeholder="Signed Download Link" >
+      <input v-model="raw.games" type="text" placeholder="Games IPA" />
       <div style="position:relative">
         <div class="" @click="preview = !preview">
           <i class="fa fa-eye togglePreview"></i>
@@ -73,6 +74,7 @@ export default {
         title: '',
         version: '',
         signed: '',
+        games: '',
         desc: '',
       },
       saved: {},

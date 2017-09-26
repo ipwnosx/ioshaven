@@ -96,6 +96,10 @@ function apps(req, res){
 }
 
 function appSave(req, res) {
+  req.body.games = req.body.games.split(',')
+  for (var i = 0; i < req.body.games.length; i++) {
+    req.body.games[i] = req.body.games[i].trim()
+  }
   redis.hset('apps', req.body.title.toLowerCase(), JSON.stringify(req.body))
   .then(r => {
     res.end('success')
