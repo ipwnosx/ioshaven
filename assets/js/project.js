@@ -1271,13 +1271,19 @@ var app = new Vue({
 
       if (value.unsigned) {
         this.searchResults = _.filter(this.searchResults, function (o) {
-          return o.dl != null;
+          return o.dl != null && o.unsigned != "";
         });
       }
 
       if (value.signed) {
         this.searchResults = _.filter(this.searchResults, function (o) {
-          return o.signed != null;
+          return o.signed != null && o.signed != "";
+        });
+      }
+
+      if (value.tags) {
+        this.searchResults = _.filter(this.searchResults, function (o) {
+          return o.tags != null && o.games != "";
         });
       }
 
@@ -29970,13 +29976,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       filters: {
         signed: false,
-        unsigned: false
+        unsigned: false,
+        tags: false
       }
     };
   },
@@ -30048,7 +30060,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: {
       'selected': _vm.filters.unsigned
     }
-  }), _vm._v(" "), _c('span', [_vm._v("Unsigned")])])])])
+  }), _vm._v(" "), _c('span', [_vm._v("Unsigned")])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox",
+    on: {
+      "click": function($event) {
+        _vm.toggle('tags')
+      }
+    }
+  }, [_c('div', {
+    class: {
+      'selected': _vm.filters.tags
+    }
+  }), _vm._v(" "), _c('span', [_vm._v("Games")])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

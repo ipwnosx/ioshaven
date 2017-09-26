@@ -79,13 +79,19 @@ const app = new Vue({
 
       if (value.unsigned) {
         this.searchResults = _.filter(this.searchResults, (o) => {
-          return o.dl != null
+          return o.dl != null && o.unsigned != ""
         })
       }
 
       if (value.signed) {
         this.searchResults = _.filter(this.searchResults, (o) => {
-          return o.signed != null
+          return o.signed != null && o.signed != ""
+        })
+      }
+
+      if (value.tags) {
+        this.searchResults = _.filter(this.searchResults, (o) => {
+          return o.tags != null && o.games != ""
         })
       }
 

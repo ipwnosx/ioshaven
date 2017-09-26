@@ -12,6 +12,11 @@
         <div :class="{'selected': filters.unsigned}"></div>
         <span>Unsigned</span>
       </div>
+
+      <div class="checkbox" @click="toggle('tags')">
+        <div :class="{'selected': filters.tags}" ></div>
+        <span>Games</span>
+      </div>
     </div>
 
   </div>
@@ -24,7 +29,8 @@ export default {
     return {
       filters:{
         signed: false,
-        unsigned: false
+        unsigned: false,
+        tags: false
       }
     }
   },
