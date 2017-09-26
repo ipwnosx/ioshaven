@@ -36,6 +36,9 @@ app.post('/devops', login)
 app.get('/donate', donate)
 app.post('/get/contacts', getContacts)
 app.post('/drop/contact', dropContact)
+app.get('/test', function (req, res) {
+  res.render('test.html')
+})
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
