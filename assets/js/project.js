@@ -29590,7 +29590,7 @@ module.exports = function spread(callback) {
 /* 37 */
 /***/ (function(module, exports) {
 
-module.exports = {"password":"","paypal":"","debug":true}
+module.exports = {"password":"asdf","paypal":"zanedevss@gmail.com","debug":false}
 
 /***/ }),
 /* 38 */
@@ -29613,7 +29613,7 @@ var Component = __webpack_require__(3)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/zack/Desktop/ioshaven/packages/resource/components/flexbox.vue"
+Component.options.__file = "/Volumes/Storage/Code/ioshaven/packages/resource/components/flexbox.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] flexbox.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -29786,9 +29786,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$parent.adverts[this.advert];
     },
     link: function link(type) {
-      if (this[type] && this[type].slice(0, 4) == 'http') return this[type];
-      if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type];
-      if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type];
+      if (this[type] && this[type].slice(0, 4) == 'http') return this[type];else if (this[type].length > 0) {
+        if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type];
+        if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type];
+        if (type == 'signed') return this[type];
+      } else return '';
     }
   },
   mounted: function mounted() {}
@@ -29887,7 +29889,7 @@ var Component = __webpack_require__(3)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/zack/Desktop/ioshaven/packages/resource/components/searchbar.vue"
+Component.options.__file = "/Volumes/Storage/Code/ioshaven/packages/resource/components/searchbar.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] searchbar.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -30102,7 +30104,7 @@ var Component = __webpack_require__(3)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/zack/Desktop/ioshaven/packages/resource/components/contact.vue"
+Component.options.__file = "/Volumes/Storage/Code/ioshaven/packages/resource/components/contact.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] contact.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -30453,7 +30455,7 @@ var Component = __webpack_require__(3)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/zack/Desktop/ioshaven/packages/resource/components/popup.vue"
+Component.options.__file = "/Volumes/Storage/Code/ioshaven/packages/resource/components/popup.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] popup.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -30623,12 +30625,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": _vm.signed
     }
-  }, [_vm._v("View Promotion")]) : _vm._e(), _vm._v(" "), (_vm.dl && !_vm.advert) ? _c('a', {
+  }, [_vm._v("View Promotion")]) : _vm._e(), _vm._v(" "), (_vm.dl.length > 0 && !_vm.advert) ? _c('a', {
     staticClass: "btn btn-primary",
     attrs: {
       "href": _vm.dl
     }
-  }, [_vm._v("Download.ipa")]) : _vm._e(), _vm._v(" "), (_vm.signed && !_vm.advert) ? _c('a', {
+  }, [_vm._v("Download.ipa")]) : _vm._e(), _vm._v(" "), (_vm.signed.length > 0 && !_vm.advert) ? _c('a', {
     staticClass: "btn btn-success",
     attrs: {
       "href": _vm.signed
@@ -30664,7 +30666,7 @@ var Component = __webpack_require__(3)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/zack/Desktop/ioshaven/packages/resource/components/contactItem.vue"
+Component.options.__file = "/Volumes/Storage/Code/ioshaven/packages/resource/components/contactItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] contactItem.vue: functional components are not supported with templates, they should use render functions.")}
 

@@ -71,8 +71,12 @@ export default {
     },
     link(type) {
       if (this[type] && this[type].slice(0,4) == 'http') return this[type]
-      if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type]
-      if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type]
+      else if (this[type].length > 0){
+        if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type]
+        if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type]
+        if (type == 'signed') return this[type]
+      }
+      else return ''
     }
   },
   mounted() {

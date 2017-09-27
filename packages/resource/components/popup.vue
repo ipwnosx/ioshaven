@@ -24,8 +24,8 @@
         <span v-if="advert"></span>
         <div class="">
           <a :href="signed" class="btn btn-primary" v-if="advert">View Promotion</a>
-          <a :href="dl" class="btn btn-primary" v-if="dl && !advert">Download.ipa</a>
-          <a :href="signed" class="btn btn-success" v-if="signed && !advert">Install Signed</a>
+          <a :href="dl" class="btn btn-primary" v-if="dl.length > 0 && !advert">Download.ipa</a>
+          <a :href="signed" class="btn btn-success" v-if="signed.length > 0 && !advert">Install Signed</a>
         </div>
 
       </div>
