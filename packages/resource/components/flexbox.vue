@@ -70,11 +70,12 @@ export default {
       return this.$parent.adverts[this.advert]
     },
     link(type) {
+      var t = this[type] || ''
       if (this[type] && this[type].slice(0,4) == 'http') return this[type]
-      else if (type.length > 0){
+      else if (t.length > 0){
         if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type]
         if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type]
-        if (type == 'signed') return this[type] || ''
+        if (type == 'signed') return this[type]
       }
       else return ''
     }
