@@ -42,6 +42,7 @@ const app = new Vue({
     adverts: require('./adverts.json'),
     apps: [],
     searchResults: [],
+    searchResultsTags: [],
     contact: {},
     store: "",
     loading: true
@@ -51,6 +52,7 @@ const app = new Vue({
     .then(res => {
       this.apps = res.data
       this.searchResults = res.data
+      this.searchResultsTags = res.data
       // this.child()
       this.loading = false
     })
@@ -67,19 +69,27 @@ const app = new Vue({
       return keys[random]
     },
     child: function(value){
+
       this.searchResults = _.sortBy(this.apps, [function (o){
         return o.title.toLowerCase()
       }])
       //
 
+      this.searchResultsTags = _.sortBy(this.apps, [function (o){
+        return o.title.toLowerCase()
+      }])
+
+      this.searchResultsTags = _.sortBy(this.searchResultsTags, [function (o){
+        return _.includes(o.tags, this.store)
+      }])
 
       this.searchResults = _.filter(this.searchResults, (o) =>{
-       return _.startsWith(o.title.toLowerCase(), this.store.toLowerCase())
+       return _.includes(o.title.toLowerCase(), this.store.toLowerCase())
       })
 
       if (value.unsigned) {
         this.searchResults = _.filter(this.searchResults, (o) => {
-          return o.dl != null && o.unsigned != ""
+          return o.dl != null && o.dl != ""
         })
       }
 
@@ -91,10 +101,11 @@ const app = new Vue({
 
       if (value.tags) {
         this.searchResults = _.filter(this.searchResults, (o) => {
-          return o.tags != null && o.games != ""
+          return o.tags != null && o.tags != ""
         })
       }
 
+      // let withTags = []
       let withAds = []
       let amount = 7
 

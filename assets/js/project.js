@@ -1230,6 +1230,7 @@ var app = new Vue({
     adverts: __webpack_require__(65),
     apps: [],
     searchResults: [],
+    searchResultsTags: [],
     contact: {},
     store: "",
     loading: true
@@ -1240,6 +1241,7 @@ var app = new Vue({
     axios.get('https://dashboard.ioshaven.co').then(function (res) {
       _this.apps = res.data;
       _this.searchResults = res.data;
+      _this.searchResultsTags = res.data;
       // this.child()
       _this.loading = false;
     }).catch(function (err) {
@@ -1264,14 +1266,21 @@ var app = new Vue({
       }]);
       //
 
+      this.searchResultsTags = _.sortBy(this.apps, [function (o) {
+        return o.title.toLowerCase();
+      }]);
+
+      this.searchResultsTags = _.sortBy(this.searchResultsTags, [function (o) {
+        return _.includes(o.tags, this.store);
+      }]);
 
       this.searchResults = _.filter(this.searchResults, function (o) {
-        return _.startsWith(o.title.toLowerCase(), _this2.store.toLowerCase());
+        return _.includes(o.title.toLowerCase(), _this2.store.toLowerCase());
       });
 
       if (value.unsigned) {
         this.searchResults = _.filter(this.searchResults, function (o) {
-          return o.dl != null && o.unsigned != "";
+          return o.dl != null && o.dl != "";
         });
       }
 
@@ -1283,10 +1292,11 @@ var app = new Vue({
 
       if (value.tags) {
         this.searchResults = _.filter(this.searchResults, function (o) {
-          return o.tags != null && o.games != "";
+          return o.tags != null && o.tags != "";
         });
       }
 
+      // let withTags = []
       var withAds = [];
       var amount = 7;
 
@@ -29786,10 +29796,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$parent.adverts[this.advert];
     },
     link: function link(type) {
-      if (this[type] && this[type].slice(0, 4) == 'http') return this[type];else if (this[type].length > 0) {
+      if (this[type] && this[type].slice(0, 4) == 'http') return this[type];else if (type.length > 0) {
         if (type == 'image') return 'https://dashboard.ioshaven.co/image/' + this[type];
         if (type == 'dl') return 'https://dashboard.ioshaven.co/ipa/' + this[type];
-        if (type == 'signed') return this[type];
+        if (type == 'signed') return this[type] || '';
       } else return '';
     }
   },
