@@ -14,7 +14,7 @@
         <span class="label">Save All</span>
       </div>
 
-      <div class="opt danger" @click="goLive">
+      <div class="opt success" @click="goLive">
         <span  v-show="goingLive"><i class="fa fa-spinner fa-spin fa-fw"></i></span>
         <span  v-show="!goingLive"><i class="fa fa-cloud-upload"></i></span>
         <span class="label">Go Live</span>
@@ -100,10 +100,10 @@ export default {
   cursor: pointer;
   background: lighten(#2196F3, 7%);
 }
-.danger {
-  background: #e02727;
+.success {
+  background: #10b948;
 }
-.danger:hover {
-  background: lighten(#e02727, 7%);
+.success:hover {
+  background: lighten(#10b948, 7%);
 }
 </style>

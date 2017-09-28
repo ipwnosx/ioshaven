@@ -2,7 +2,6 @@ html{
   font-size: 16px;
   font-family: sans-serif;
 }
-
 #dropper {
     border: 5px dashed black;
     border-radius: 1rem;
@@ -87,3 +86,24 @@ ul .item:hover{
 /*.top{align-self: start}
 .middle{align-self: center}
 .bottom{align-self: end}*/
+
+.btn {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    border: 1px solid;
+    color: inherit;
+    font-size: 1rem;
+}
+
+.btn svg, .btn i {
+  margin-right: 0.5rem;
+}
+.btn-danger{
+  background: #e02727;
+  color: white;
+}
+.btn:hover{cursor: pointer;}
+.btn-danger:hover {
+  background: #e44646
+}

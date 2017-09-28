@@ -40080,7 +40080,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.sect {\n      width: calc(33.3333333333% + -6px);\n      padding: 2.8rem 2rem 1rem;\n      border: 1px solid black;\n      box-sizing: border-box;\n      background: #f2f2f2;\n      position: relative;\n      border-width: 3px;\n      display: inline-block;\n      margin: 3px;\n}\n.sect.hidden{padding: 1.9rem\n}\n.sect.not-saved {\n      border-color: #b34b4b;\n      background: #f3e3e3;\n}\ninput, textarea {\n      display: block;\n      border: 1px solid;\n      padding: 1rem 2rem;\n      font-size: 1.2rem;\n      margin: 1rem 0;\n      width: 100%;\n      border-radius: 1rem;\n      outline: none;\n      box-sizing: border-box;\n      resize: vertical;\n}\n.hide {\n      font-size: 1.5rem;\n      font-family: sans-serif;\n      letter-spacing: 0.2rem;\n      position: absolute;\n      top: 1px;\n      right: 3px;\n      cursor: pointer;\n      z-index: 2;\n      background: inherit;\n      padding: 1rem;\n      display: flex;\n      justify-content: space-between;\n      width: auto;\n      box-sizing: border-box;\n      opacity: 1;\n}\n.hide span span {\n    opacity: 0.5;\n    position: relative;\n}\n.hide span span:hover {\n    opacity: 1;\n    cursor: pointer;\n}\n.hide.expand{\n    width: calc(100% - 4px);\n}\n.search-results {\n      background: white;\n      position: absolute;\n      bottom: 1px;\n      transform: translateY(100%);\n      z-index: 3;\n      box-sizing: border-box;\n      border: 1px solid;\n      width: 100%;\n      max-height: 15rem;\n      overflow-y: auto;\n}\n.search{\n    position: relative;\n}\ninput.found{\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 0;\n}\n.preview {\n      display: flex;\n      position: fixed;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      background: white;\n      width: 90vw;\n      height: 90vh;\n      border: 2px solid black;\n      box-shadow: 0 100vw 0 200vw rgba(0, 0, 0, 0.79);\n      box-sizing: border-box;\n      font-family: sans-serif;\n      letter-spacing: 0.1rem;\n      z-index: 10;\n}\n.preview span {\n    overflow: auto;\n    width: calc( 100% + 1rem);\n    height: 100%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    padding: 2rem;\n    box-sizing: border-box;\n}\n.togglePreview{\n    position: absolute;\n    top: 1rem;\n    right: 1rem;\n    opacity: 0.5;\n}\n.togglePreview:hover{\n    cursor: pointer;\n    opacity: 1;\n}\n.nothing {\n      font-size: 1.2rem;\n      font-family: sans-serif;\n      align-self: center;\n      margin: auto;\n      text-transform: uppercase;\n      letter-spacing: 0.2rem;\n      text-align: center;\n      line-height: 3rem;\n      z-index: 20;\n}\n#tooltip {\n    position: fixed;\n    z-index: 30;\n    background: black;\n    color: white;\n    font-size: 0.7rem;\n    padding: 0.5rem;\n    border-radius: 1rem;\n    letter-spacing: initial;\n}\n", ""]);
+exports.push([module.i, "\n.sect {\n      width: 400px;\n      padding: 2.8rem 2rem 1rem;\n      border: 1px solid black;\n      box-sizing: border-box;\n      background: #f2f2f2;\n      position: relative;\n      border-width: 3px;\n      display: inline-block;\n      margin: 5px auto;\n}\n.sect.hidden{padding: 1.9rem\n}\n.sect.not-saved {\n      border-color: #b34b4b;\n      background: #f3e3e3;\n}\ninput, textarea {\n      display: block;\n      border: 1px solid;\n      padding: 1rem 2rem;\n      font-size: 1.2rem;\n      margin: 1rem 0;\n      width: 100%;\n      border-radius: 1rem;\n      outline: none;\n      box-sizing: border-box;\n      resize: vertical;\n}\n.hide {\n      font-size: 1.5rem;\n      font-family: sans-serif;\n      letter-spacing: 0.2rem;\n      position: absolute;\n      top: 1px;\n      right: 3px;\n      cursor: pointer;\n      z-index: 2;\n      background: inherit;\n      padding: 1rem;\n      display: flex;\n      justify-content: space-between;\n      width: auto;\n      box-sizing: border-box;\n      opacity: 1;\n}\n.hide span span {\n    opacity: 0.5;\n    position: relative;\n}\n.hide span span:hover {\n    opacity: 1;\n    cursor: pointer;\n}\n.hide.expand{\n    width: calc(100% - 4px);\n}\n.search-results {\n      background: white;\n      position: absolute;\n      bottom: 1px;\n      transform: translateY(100%);\n      z-index: 3;\n      box-sizing: border-box;\n      border: 1px solid;\n      width: 100%;\n      max-height: 15rem;\n      overflow-y: auto;\n}\n.search{\n    position: relative;\n}\ninput.found{\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 0;\n}\n.preview {\n      display: flex;\n      position: fixed;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      background: white;\n      width: 90vw;\n      height: 90vh;\n      border: 2px solid black;\n      box-shadow: 0 100vw 0 200vw rgba(0, 0, 0, 0.79);\n      box-sizing: border-box;\n      font-family: sans-serif;\n      letter-spacing: 0.1rem;\n      z-index: 10;\n}\n.preview span {\n    overflow: auto;\n    width: calc( 100% + 1rem);\n    height: 100%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    padding: 2rem;\n    box-sizing: border-box;\n}\n.togglePreview{\n    position: absolute;\n    top: 1rem;\n    right: 1rem;\n    opacity: 0.5;\n}\n.togglePreview:hover{\n    cursor: pointer;\n    opacity: 1;\n}\n.nothing {\n      font-size: 1.2rem;\n      font-family: sans-serif;\n      align-self: center;\n      margin: auto;\n      text-transform: uppercase;\n      letter-spacing: 0.2rem;\n      text-align: center;\n      line-height: 3rem;\n      z-index: 20;\n}\n#tooltip {\n    position: fixed;\n    z-index: 30;\n    background: black;\n    color: white;\n    font-size: 0.7rem;\n    padding: 0.5rem;\n    border-radius: 1rem;\n    letter-spacing: initial;\n}\n.hide .title {\n    white-space: pre;\n    max-width: 50%;\n    text-overflow: ellipsis;\n    overflow: hidden;\n}\n.btn .title{\n  margin-left: 1rem;\n  font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -40091,6 +40091,8 @@ exports.push([module.i, "\n.sect {\n      width: calc(33.3333333333% + -6px);\n 
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -40192,13 +40194,31 @@ var $mark = __webpack_require__(47);
       return new Promise(function (resolve, reject) {
         if (_this.raw.image.length > 0 && _this.raw.title.length > 0 && _this.raw.version.length > 0 && _this.raw.desc.length > 0) {
           _this.saved = JSON.parse(JSON.stringify(_this.raw));
+
           axios.post('/app/save', _this.saved).then(function (res) {
             _this.update();
             return resolve(res);
           }).catch(function (err) {
-            return reject(err);
+            reject(err);
           });
-        }
+        } else reject();
+      });
+    },
+    del: function del() {
+      var _this2 = this;
+
+      return new Promise(function (resolve, reject) {
+        _this2.save().then(function (res) {
+          return axios.post('/app/delete', _this2.saved);
+        }).catch(function (err) {
+          _this2.open = false;
+        }).then(function (res) {
+          _this2.update();
+          _this2.open = false;
+          return resolve(res);
+        }).catch(function (err) {
+          return reject(err);
+        });
       });
     },
     tooltip: function tooltip(e, msg, show) {
@@ -40210,13 +40230,13 @@ var $mark = __webpack_require__(47);
       });
     },
     chosen: function chosen(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       var val = e.target.innerHTML;
       axios.post('/json', {
         what: val
       }).then(function (r) {
-        _this2.raw = r.data;
+        _this3.raw = r.data;
       });
     }
   },
@@ -41542,7 +41562,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       'hide': true,
       'expand': !_vm.show
     }
-  }, [(!_vm.show) ? _c('span', [_vm._v(_vm._s(_vm.raw.title))]) : _vm._e(), _vm._v(" "), _c('span', {
+  }, [(!_vm.show) ? _c('span', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.raw.title))]) : _vm._e(), _vm._v(" "), _c('span', {
     on: {
       "mouseout": function($event) {
         _vm.tooltip($event, '', false)
@@ -41733,7 +41755,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.raw.desc = $event.target.value
       }
     }
-  })])], 1) : _vm._e(), _vm._v(" "), (_vm.preview) ? _c('div', {
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-danger",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.del
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-trash"
+  }), _vm._v(" Delete "), _c('span', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.raw.title))])])], 1) : _vm._e(), _vm._v(" "), (_vm.preview) ? _c('div', {
     staticClass: "preview"
   }, [_c('div', {
     staticClass: "hide",
@@ -41841,7 +41875,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.apps {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n}\n.menu {\n  position: fixed;\n  bottom: 0;\n  width: 100%;\n  left: 0;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-family: sans-serif;\n  text-transform: capitalize;\n}\n.opt {\n  background: #2196F3;\n  padding: 1rem 1.1rem;\n  border-radius: 3rem;\n  font-size: 1rem;\n  color: white;\n  margin: 1rem 0.5rem;\n  margin-top: 0;\n}\n.opt .label {\n  margin-left: 0.5rem;\n}\n.opt:hover {\n  cursor: pointer;\n  background: #43a6f5;\n}\n.danger {\n  background: #e02727;\n}\n.danger:hover {\n  background: #e44646;\n}\n", ""]);
+exports.push([module.i, "\n.apps {\n  display: flex;\n  align-items: flex-start;\n  flex-wrap: wrap;\n}\n.menu {\n  position: fixed;\n  bottom: 0;\n  width: 100%;\n  left: 0;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-family: sans-serif;\n  text-transform: capitalize;\n}\n.opt {\n  background: #2196F3;\n  padding: 1rem 1.1rem;\n  border-radius: 3rem;\n  font-size: 1rem;\n  color: white;\n  margin: 1rem 0.5rem;\n  margin-top: 0;\n}\n.opt .label {\n  margin-left: 0.5rem;\n}\n.opt:hover {\n  cursor: pointer;\n  background: #43a6f5;\n}\n.success {\n  background: #10b948;\n}\n.success:hover {\n  background: #13da55;\n}\n", ""]);
 
 // exports
 
@@ -41973,7 +42007,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('span', {
     staticClass: "label"
   }, [_vm._v("Save All")])]), _vm._v(" "), _c('div', {
-    staticClass: "opt danger",
+    staticClass: "opt success",
     on: {
       "click": _vm.goLive
     }

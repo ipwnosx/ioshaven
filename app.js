@@ -38,6 +38,7 @@ app.post('/upload/:folder', upload)
 app.get('/apps', apps)
 app.get('/files', getFiles)
 app.post('/app/save', appSave)
+app.post('/app/delete', appDelete)
 app.post('/json', getJSON)
 app.post('/golive', goLive)
 app.get('/liveApps', liveApps)
@@ -108,7 +109,13 @@ function appSave(req, res) {
   .then(r => {
     res.end('success')
   })
+}
 
+function appDelete(req, res) {
+  redis.hdel('apps', req.body.title.toLowerCase())
+  .then(r => {
+    res.end('success')
+  })
 }
 
 function getJSON(req, res) {

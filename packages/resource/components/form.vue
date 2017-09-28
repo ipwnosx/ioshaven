@@ -10,7 +10,7 @@
       'hide': true,
       'expand': !show
     }">
-      <span v-if="!show">{{raw.title}}</span>
+      <span v-if="!show" class="title">{{raw.title}}</span>
       <span @mouseout="tooltip($event, '', false)">
         <span @click="save" class="saveForm" @mouseover="tooltip($event, 'Save', true)" >
           <i class="fa fa-save"></i>
@@ -41,9 +41,11 @@
           <i class="fa fa-eye togglePreview"></i>
         </div>
 
-        <textarea v-model="raw.desc" rows="8" cols="80"  placeholder="App Description">
-        </textarea>
+        <textarea v-model="raw.desc" rows="8" cols="80"  placeholder="App Description"></textarea>
       </div>
+      <button type="button" class="btn btn-danger" @click="del">
+        <i class="fa fa-trash"></i> Delete <span class="title">{{raw.title}}</span>
+      </button>
 
     </div>
 
@@ -102,18 +104,37 @@ export default {
           this.raw.desc.length > 0
         ) {
           this.saved = JSON.parse(JSON.stringify(this.raw))
+
           axios.post('/app/save', this.saved)
             .then((res)=>{
               this.update()
               return resolve(res)
             })
-            .catch((err)=>reject(err))
+            .catch((err)=>{reject(err)})
 
           }
+          else reject()
       });
-
-
     },
+
+    del() {
+      return new Promise((resolve, reject) => {
+        this.save()
+        .then(res => {
+          return axios.post('/app/delete', this.saved)
+        })
+        .catch(err => {
+          this.open = false
+        })
+        .then(res => {
+          this.update()
+          this.open = false
+          return resolve(res)
+        })
+        .catch((err)=>reject(err))
+      });
+    },
+
     tooltip(e, msg, show){
       if (show) this.showToolip = true
       else this.showToolip = false
@@ -147,7 +168,7 @@ export default {
 <style lang="css">
 
   .sect {
-      width: calc(33.3333333333% + -6px);
+      width: 400px;
       padding: 2.8rem 2rem 1rem;
       border: 1px solid black;
       box-sizing: border-box;
@@ -155,7 +176,7 @@ export default {
       position: relative;
       border-width: 3px;
       display: inline-block;
-      margin: 3px;
+      margin: 5px auto;
   }.sect.hidden{padding: 1.9rem}
   .sect.not-saved {
       border-color: #b34b4b;
@@ -277,5 +298,15 @@ export default {
     padding: 0.5rem;
     border-radius: 1rem;
     letter-spacing: initial;
+}
+.hide .title {
+    white-space: pre;
+    max-width: 50%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.btn .title{
+  margin-left: 1rem;
+  font-weight: bold;
 }
 </style>
