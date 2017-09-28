@@ -100,7 +100,7 @@ function apps(req, res){
 }
 
 function appSave(req, res) {
-  req.body.tags = req.body.tags.split(',')
+  req.body.tags = (req.body.tags) ? req.body.tags.split(',') : ''
   for (var i = 0; i < req.body.tags.length; i++) {
     req.body.tags[i] = req.body.tags[i].trim()
   }
