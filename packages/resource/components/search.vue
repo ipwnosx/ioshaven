@@ -51,14 +51,17 @@ export default {
       var newlist = list
       list = this.raw[list]
       if (search.length <= 0) return this.filtered[newlist] = []
+
       var nl = _.sortBy(list, [function (o){
         if (prop)return o[prop].toLowerCase()
         else return o.toLowerCase()
       }])
+
       nl = _.filter(nl, (o) =>{
-       if (prop) return _.startsWith(o[prop].toLowerCase(), search.toLowerCase())
-       else return _.startsWith(o.toLowerCase(), search.toLowerCase())
+       if (prop) return _.includes(o[prop].toLowerCase(), search.toLowerCase())
+       else return _.includes(o.toLowerCase(), search.toLowerCase())
       })
+      
       let res = []
       _.forEach(nl, item => {
         if (prop) res.push(item[prop])
