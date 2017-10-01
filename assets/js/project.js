@@ -29818,7 +29818,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "inside"
   }, [_c('h4', {
     staticClass: "center color-black"
-  }), _vm._v(" "), _c('img', {
+  }, [_vm._v(_vm._s(_vm.$advert().title))]), _vm._v(" "), _c('img', {
     staticClass: "center-block",
     attrs: {
       "src": _vm.$advert().image
@@ -30958,7 +30958,7 @@ if (false) {
 /* 65 */
 /***/ (function(module, exports) {
 
-module.exports = {"digitalocean":{"advert":"true","image":"app-icons/DigitalOcean_logo.png","title":"DigitalOcean","link":"http://pages.news.digitalocean.com/dc/AyKQ30vur1Nt8H30LIWxk-j5xHmafGnoECQwn1ooO76ScszS35unZz_h2H_F8nD6n_mnk_qDkjx0_GRgx6WpvA==/ZIXcv004V0002n0Es306DES","desc":"DigitalOcean is a cloud hosting provider built for developers and ran strictly on high-performance Solid State Disks. DigitalOcean offers six popular Linux distributions that can be automatically pre-installed upon deployment of a server: Ubuntu, CentOS, Debian, Fedora, CoreOS and FreeBSD. A multitude of application packages can be installed with just one click, including LAMP, LEMP, and MEAN; also development frameworks Ruby on Rails, Django and Docker; as well as popular applications like eCommerce software Magento, CMS solutions Wordpress and Ghost, and MediaWiki. With the help the Simple Control Panel, you can get a server up and running in less than one minute! All for a little as $5 a month!!Luckily DigitalOcean reached out to us and gave us a discount for our users. If you sign up today they will give you $10 towards your next purchase. We have been using DigitalOcean for over a year, not only on this site but on many other sites and projects. So trust us when we say DigitalOcean provides a fantastic service. What do you say? Do you want to give DigitalOcean a try? Click the link below when you are ready."}}
+module.exports = {"digitalocean":{"advert":"true","image":"app-icons/DigitalOcean_logo.png","title":"DigitalOcean","link":"http://pages.news.digitalocean.com/dc/AyKQ30vur1Nt8H30LIWxk-j5xHmafGnoECQwn1ooO76ScszS35unZz_h2H_F8nD6n_mnk_qDkjx0_GRgx6WpvA==/ZIXcv004V0002n0Es306DES","desc":"DigitalOcean is a cloud hosting provider built for developers and ran strictly on high-performance Solid State Disks. DigitalOcean offers six popular Linux distributions that can be automatically pre-installed upon deployment of a server: Ubuntu, CentOS, Debian, Fedora, CoreOS and FreeBSD. A multitude of application packages can be installed with just one click, including LAMP, LEMP, and MEAN; also development frameworks Ruby on Rails, Django and Docker; as well as popular applications like eCommerce software Magento, CMS solutions Wordpress and Ghost, and MediaWiki. With the help the Simple Control Panel, you can get a server up and running in less than one minute! All for a little as $5 a month!!Luckily DigitalOcean reached out to us and gave us a discount for our users. If you sign up today they will give you $10 towards your next purchase. We have been using DigitalOcean for over a year, not only on this site but on many other sites and projects. So trust us when we say DigitalOcean provides a fantastic service. What do you say? Do you want to give DigitalOcean a try? Click the link below when you are ready."},"shortest":{"advert":"true","image":"app-icons/shortest.png","title":"Shorte.st","link":"http://join-shortest.com/ref/1011878b0b","desc":"Monetize your website and links you share. It's a smart and easy way to get extra income from your traffic!"}}
 
 /***/ }),
 /* 66 */

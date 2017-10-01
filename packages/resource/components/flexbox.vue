@@ -1,7 +1,7 @@
 <template>
 <div class="box2 col-md-6 col-lg-4 col-xl-3">
   <div class="inside" v-if="advert">
-    <h4 class="center color-black"></h4>
+    <h4 class="center color-black">{{$advert().title}}</h4>
     <img :src="$advert().image" class="center-block" />
     <popup
       :advert="true"
