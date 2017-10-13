@@ -2,8 +2,6 @@ const express =require('express')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
-const Redis = require('ioredis');
-const redis = new Redis();
 const _ =require('lodash')
 const bodyParser  =  require('body-parser')
 const nunjucks = require('nunjucks')
@@ -199,21 +197,4 @@ function goLive(req, res) {
   .then(response => {
     res.end('yes')
   })
-  // redis.hgetall('apps')
-  // .then(apps=>{
-  //   return redis.hmset('liveApps', apps)
-  // })
-  // .then(liveApps=>{
-  //   return res.end('yes')
-  // })
 }
-
-// function liveApps(req, res) {
-//   redis.hgetall('liveApps')
-//   .then(r=>{
-//     for (key in r){
-//       r[key] = JSON.parse(r[key])
-//     }
-//     res.json(r)
-//   })
-// }
