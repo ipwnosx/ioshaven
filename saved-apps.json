@@ -1,0 +1,38 @@
+{
+  "asdf": {
+    "image": "aero.png",
+    "dl": "Bobby MovieBox v3.1.9.ipa",
+    "title": "asdf",
+    "version": "123",
+    "signed": "asdf",
+    "tags": [
+      "asdf"
+    ],
+    "desc": "asdf",
+    "deleted": false
+  },
+  "anew app": {
+    "image": "audiotube.png",
+    "dl": "Bobby MovieBox v3.1.9.ipa",
+    "title": "anew app",
+    "version": "1",
+    "signed": "asdf",
+    "tags": [
+      "asdf"
+    ],
+    "desc": "asdf",
+    "deleted": false
+  },
+  "another app": {
+    "image": "aero.png",
+    "dl": "Instagram Rcoket v18.0_2.1.3.ipa",
+    "title": "another app",
+    "version": "2",
+    "signed": "asdf",
+    "tags": [
+      "asdf"
+    ],
+    "desc": "asdf",
+    "deleted": false
+  }
+}

@@ -15,6 +15,9 @@ const fs = require('fs')
 const path = require('path')
 const exec = require('child_process').exec
 
+const Dropbox = require('dropbox');
+const dbx = new Dropbox({ accessToken: env.dropbox });
+
 nunjucks.configure('views', {
   autoescape: true,
   express: app
@@ -33,124 +36,184 @@ server.listen(8000,()=>{
 })
 
 app.get('/', home)
-app.get('/upload/:folder', getUpload)
-app.post('/upload/:folder', upload)
-app.get('/apps', apps)
+// app.get('/upload/:folder', getUpload)
+// app.post('/upload/:folder', upload)
+// app.get('/apps', apps)
 app.get('/files', getFiles)
+app.get('/read', read)
 app.post('/app/save', appSave)
 app.post('/app/delete', appDelete)
 app.post('/json', getJSON)
 app.post('/golive', goLive)
-app.get('/liveApps', liveApps)
+// app.get('/liveApps', liveApps)
 
 
-function readdir(path) {
+// function readdir(path) {
+//   return new Promise(function(resolve, reject) {
+//     fs.readdir(path, function(err, items) {
+//         if (err) reject(err)
+//         resolve(items)
+//     });
+//   });
+// }
+
+function readFile(path) {
   return new Promise(function(resolve, reject) {
-    fs.readdir(path, function(err, items) {
-        if (err) reject(err)
-        resolve(items)
-    });
+    fs.readFile(path, 'utf8', function (err, data){
+      if (err) reject(err)
+      resolve (data)
+    })
+  });
+}
+
+function writeFile(path, data) {
+  return new Promise(function(resolve, reject) {
+    fs.writeFile(path, JSON.stringify(data, null, 2), function (err) {
+      if (err) reject (err)
+      resolve()
+    })
   });
 }
 
 
+
+
+
 function home(req, res){
-  res.render('home.html')
+  res.render('index.html')
+}
+function read(req, res){
+  dbx.filesDownload({path: '/env.json'})
+    .then(function(response) {
+      let a = response.fileBinary
+      a = JSON.parse(a)
+      console.log(typeof a, a);
+      res.json(a)
+    })
+
 }
 
-function getUpload(req, res) {
-  res.render('upload.html', {
-    folder: req.params.folder
-  })
-}
-
-function upload(req, res){
-  if (!req.files) return res.status(400).send('No files were uploaded!')
-
-  let u = req.files.file
-  let l = `/uploads/${req.params.folder}/${u.name}`
-
-  u.mv(__dirname + l, function (err) {
-    if (err) return res.status(500).send(err)
-    res.send('File Uploaded')
-  })
-}
-
+// function getUpload(req, res) {
+//   res.render('upload.html', {
+//     folder: req.params.folder
+//   })
+// }
+//
+// function upload(req, res){
+//   if (!req.files) return res.status(400).send('No files were uploaded!')
+//
+//   let u = req.files.file
+//   let l = `/uploads/${req.params.folder}/${u.name}`
+//
+//   u.mv(__dirname + l, function (err) {
+//     if (err) return res.status(500).send(err)
+//     res.send('File Uploaded')
+//   })
+// }
+//
 function getFiles(req, res){
   let ipas, images;
-  return readdir(__dirname + '/uploads/ipas')
-  .then(items => {
-    ipas = items
-    return readdir(__dirname + '/uploads/images')
-  })
-  .then(items => {
-    images = items
-    return res.json({
-      ipas: ipas,
-      images: images
+  let lists = {
+    images: [],
+    ipas: []
+  }
+
+  dbx.filesListFolder({path: '/ipas'})
+    .then(function(response) {
+      ipas = response.entries
+      return dbx.filesListFolder({path: '/images'})
     })
-  })
-  .catch(err => {
-    return res.json(err)
-  })
+    .then(function(response) {
+      images = response.entries
+      images.forEach(image => lists.images.push(image.name))
+      ipas.forEach(ipa => lists.ipas.push(ipa.name))
+      return res.json(lists)
+    })
+    .catch(err => {
+      return res.json(err)
+    })
 }
-
-
-function apps(req, res){
-  res.render('apps.html')
-}
-
+//
+//
+// function apps(req, res){
+//   res.render('apps.html')
+// }
+//
 function appSave(req, res) {
   req.body.tags = (req.body.tags) ? req.body.tags.split(',') : ''
   for (var i = 0; i < req.body.tags.length; i++) {
     req.body.tags[i] = req.body.tags[i].trim()
   }
-  redis.hset('apps', req.body.title.toLowerCase(), JSON.stringify(req.body))
-  .then(r => {
+  readFile('saved-apps.json')
+  .then(data => {
+    var o = JSON.parse(data)
+    o[req.body.title.toLowerCase()] = req.body
+    o[req.body.title.toLowerCase()].deleted = false
+    return writeFile('saved-apps.json', o)
+  })
+  .then (data => {
     res.end('success')
   })
 }
 
+
+
 function appDelete(req, res) {
-  redis.hdel('apps', req.body.title.toLowerCase())
-  .then(r => {
+  readFile('saved-apps.json')
+  .then(data => {
+    var o = JSON.parse(data)
+    o[req.body.title.toLowerCase()].deleted = true
+    return writeFile('saved-apps.json', o)
+  })
+  .then (data => {
     res.end('success')
   })
 }
+
+
+
 
 function getJSON(req, res) {
   if (req.body.what){
-    redis.hget('apps', req.body.what.toLowerCase())
-    .then(r=> {
-      res.json(JSON.parse(r))
+    readFile('saved-apps.json')
+    .then(data => {
+      var o = JSON.parse(data)
+      res.json(o[req.body.what.toLowerCase()])
     })
   }else {
-    redis.hgetall('apps')
-    .then(r=> {
-      for (key in r){
-        r[key] = JSON.parse(r[key])
-      }
-      res.json(r)
+    readFile('saved-apps.json')
+    .then(data => {
+      res.json(JSON.parse(data))
     })
   }
-
 }
 function goLive(req, res) {
-  redis.hgetall('apps')
-  .then(apps=>{
-    return redis.hmset('liveApps', apps)
+  readFile('saved-apps.json')
+  .then(data => {
+    return dbx.filesUpload({
+      path: '/live-apps.js',
+      contents: data ,
+      mode: 'overwrite'
+    })
+  }).catch(console.log)
+  .then(response => {
+    res.end('yes')
   })
-  .then(liveApps=>{
-    return res.end('yes')
-  })
+  // redis.hgetall('apps')
+  // .then(apps=>{
+  //   return redis.hmset('liveApps', apps)
+  // })
+  // .then(liveApps=>{
+  //   return res.end('yes')
+  // })
 }
 
-function liveApps(req, res) {
-  redis.hgetall('liveApps')
-  .then(r=>{
-    for (key in r){
-      r[key] = JSON.parse(r[key])
-    }
-    res.json(r)
-  })
-}
+// function liveApps(req, res) {
+//   redis.hgetall('liveApps')
+//   .then(r=>{
+//     for (key in r){
+//       r[key] = JSON.parse(r[key])
+//     }
+//     res.json(r)
+//   })
+// }

@@ -9,7 +9,6 @@ window.$ = window.jquery = require('jquery')
 
 
 
-
 Vue.component('search', require('./components/search.vue'))
 Vue.component('myform', require('./components/form.vue'))
 Vue.component('apps', require('./components/apps.vue'))

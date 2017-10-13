@@ -61,7 +61,7 @@ export default {
        if (prop) return _.includes(o[prop].toLowerCase(), search.toLowerCase())
        else return _.includes(o.toLowerCase(), search.toLowerCase())
       })
-      
+
       let res = []
       _.forEach(nl, item => {
         if (prop) res.push(item[prop])
